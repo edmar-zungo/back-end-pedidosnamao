@@ -1,18 +1,13 @@
 package com.edmarzungo.pedidosnamao.domain;
 
 import com.edmarzungo.pedidosnamao.enumerations.TipoItemConsumo;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-public class Cardapio {
+public class CardapioModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,12 +15,13 @@ public class Cardapio {
 
     private String descricao;
     @NotNull
+    @Enumerated(EnumType.STRING)
     private TipoItemConsumo tipoItemConsumo;
 
-    public Cardapio() {
+    public CardapioModel() {
     }
 
-    public Cardapio(UUID id, String descricao, TipoItemConsumo tipoItemConsumo) {
+    public CardapioModel(UUID id, String descricao, TipoItemConsumo tipoItemConsumo) {
         this.id = id;
         this.descricao = descricao;
         this.tipoItemConsumo = tipoItemConsumo;
@@ -59,8 +55,8 @@ public class Cardapio {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Cardapio cardapio = (Cardapio) o;
-        return Objects.equals(id, cardapio.id) && Objects.equals(descricao, cardapio.descricao) && tipoItemConsumo == cardapio.tipoItemConsumo;
+        CardapioModel cardapioModel = (CardapioModel) o;
+        return Objects.equals(id, cardapioModel.id) && Objects.equals(descricao, cardapioModel.descricao) && tipoItemConsumo == cardapioModel.tipoItemConsumo;
     }
 
     @Override
@@ -70,7 +66,7 @@ public class Cardapio {
 
     @Override
     public String toString() {
-        return "Cardapio{" +
+        return "CardapioModel{" +
                 "id=" + id +
                 ", descricao='" + descricao + '\'' +
                 ", tipoItemConsumo=" + tipoItemConsumo +

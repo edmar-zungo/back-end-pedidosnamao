@@ -4,17 +4,16 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
-public class ItemPedido {
+public class ItemPedidoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     @NotNull
-    private ItemConsumo itemConsumo;
+    private ItemConsumoModel itemConsumoModel;
     @NotNull
     private long quantidadeItemConsumo;
     @NotNull
@@ -23,20 +22,20 @@ public class ItemPedido {
     private String descricao;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Set<Pedido> pedidos;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private PedidoModel pedidoModel;
 
-    public ItemPedido() {
+    public ItemPedidoModel() {
     }
 
-    public ItemPedido(UUID id, ItemConsumo itemConsumo, long quantidadeItemConsumo, Double precoItemPedido, Double desconto, String descricao, Set<Pedido> pedidos) {
+    public ItemPedidoModel(UUID id, ItemConsumoModel itemConsumoModel, long quantidadeItemConsumo, Double precoItemPedido, Double desconto, String descricao, PedidoModel pedidoModel) {
         this.id = id;
-        this.itemConsumo = itemConsumo;
+        this.itemConsumoModel = itemConsumoModel;
         this.quantidadeItemConsumo = quantidadeItemConsumo;
         this.precoItemPedido = precoItemPedido;
         this.desconto = desconto;
         this.descricao = descricao;
-        this.pedidos = pedidos;
+        this.pedidoModel = pedidoModel;
     }
 
     public UUID getId() {
@@ -47,12 +46,12 @@ public class ItemPedido {
         this.id = id;
     }
 
-    public ItemConsumo getItemConsumo() {
-        return itemConsumo;
+    public ItemConsumoModel getItemConsumo() {
+        return itemConsumoModel;
     }
 
-    public void setItemConsumo(ItemConsumo itemConsumo) {
-        this.itemConsumo = itemConsumo;
+    public void setItemConsumo(ItemConsumoModel itemConsumoModel) {
+        this.itemConsumoModel = itemConsumoModel;
     }
 
     public long getQuantidadeItemConsumo() {
@@ -87,37 +86,37 @@ public class ItemPedido {
         this.descricao = descricao;
     }
 
-    public Set<Pedido> getPedidos() {
-        return pedidos;
+    public PedidoModel getPedido() {
+        return pedidoModel;
     }
 
-    public void setPedidos(Set<Pedido> pedidos) {
-        this.pedidos = pedidos;
+    public void setPedido(PedidoModel pedidoModel) {
+        this.pedidoModel = pedidoModel;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ItemPedido that = (ItemPedido) o;
-        return quantidadeItemConsumo == that.quantidadeItemConsumo && Objects.equals(id, that.id) && Objects.equals(itemConsumo, that.itemConsumo) && Objects.equals(precoItemPedido, that.precoItemPedido) && Objects.equals(desconto, that.desconto) && Objects.equals(descricao, that.descricao) && Objects.equals(pedidos, that.pedidos);
+        ItemPedidoModel that = (ItemPedidoModel) o;
+        return quantidadeItemConsumo == that.quantidadeItemConsumo && Objects.equals(id, that.id) && Objects.equals(itemConsumoModel, that.itemConsumoModel) && Objects.equals(precoItemPedido, that.precoItemPedido) && Objects.equals(desconto, that.desconto) && Objects.equals(descricao, that.descricao) && Objects.equals(pedidoModel, that.pedidoModel);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, itemConsumo, quantidadeItemConsumo, precoItemPedido, desconto, descricao, pedidos);
+        return Objects.hash(id, itemConsumoModel, quantidadeItemConsumo, precoItemPedido, desconto, descricao, pedidoModel);
     }
 
     @Override
     public String toString() {
-        return "ItemPedido{" +
+        return "ItemPedidoModel{" +
                 "id=" + id +
-                ", itemConsumo=" + itemConsumo +
+                ", itemConsumoModel=" + itemConsumoModel +
                 ", quantidadeItemConsumo=" + quantidadeItemConsumo +
                 ", precoItemPedido=" + precoItemPedido +
                 ", desconto=" + desconto +
                 ", descricao='" + descricao + '\'' +
-                ", pedidos=" + pedidos +
+                ", pedidos=" + pedidoModel +
                 '}';
     }
 }

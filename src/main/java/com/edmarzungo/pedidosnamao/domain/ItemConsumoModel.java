@@ -7,47 +7,70 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
-public class ItemConsumo {
+@Table(name = "item_consumo")
+public class ItemConsumoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private UUID id;
 
+
+    @Column(name = "imagem")
+    @Lob
     private byte[] imagem;
 
+    @Column(name = "imagem_content_type")
+    private String imagemContentType;
+
+    @Column(name = "descricao")
     @NotBlank
     private String descricao;
-    @NotBlank
+    @NotNull
+    @Column(name = "preco")
     private Double preco;
     @NotNull
+    @Column(name = "estado_item_pedido")
+    @Enumerated(EnumType.STRING)
     private EstadoItem estadoItemPedido;
     @NotNull
-    private LocalDateTime dataCriacao;
+    @Column(name = "data_criacao")
+    private ZonedDateTime dataCriacao;
 
+    @Column(name = "cozinha")
     private String cozinha;
+
+    @Column(name = "origem")
     private String origem;
     @NotNull
-    private LocalDateTime dataActualizaca;
+    @Column(name = "data_actualizacao")
+    private ZonedDateTime dataActualizaca;
     @NotNull
+    @Column(name = "tipo_item_consumo")
+    @Enumerated(EnumType.STRING)
     private TipoItemConsumo tipoItemConsumo;
+
+    @Column(name = "tipo_bebida")
+    @Enumerated(EnumType.STRING)
     private TipoBebida tipoBebida;
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Set<Cardapio> cardapios;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "cardapio_id")
+    private CardapioModel cardapioModel;
 
-    public ItemConsumo() {
+    public ItemConsumoModel() {
     }
 
-    public ItemConsumo(UUID id, byte[] imagem, String descricao, Double preco, EstadoItem estadoItemPedido, LocalDateTime dataCriacao, String cozinha, String origem, LocalDateTime dataActualizaca, TipoItemConsumo tipoItemConsumo, TipoBebida tipoBebida, Set<Cardapio> cardapios) {
+    public ItemConsumoModel(UUID id, byte[] imagem, String imagemContentType, String descricao, Double preco, EstadoItem estadoItemPedido, ZonedDateTime dataCriacao, String cozinha, String origem, ZonedDateTime dataActualizaca, TipoItemConsumo tipoItemConsumo, TipoBebida tipoBebida, CardapioModel cardapioModel) {
         this.id = id;
         this.imagem = imagem;
+        this.imagemContentType = imagemContentType;
         this.descricao = descricao;
         this.preco = preco;
         this.estadoItemPedido = estadoItemPedido;
@@ -57,7 +80,7 @@ public class ItemConsumo {
         this.dataActualizaca = dataActualizaca;
         this.tipoItemConsumo = tipoItemConsumo;
         this.tipoBebida = tipoBebida;
-        this.cardapios = cardapios;
+        this.cardapioModel = cardapioModel;
     }
 
     public UUID getId() {
@@ -74,6 +97,14 @@ public class ItemConsumo {
 
     public void setImagem(byte[] imagem) {
         this.imagem = imagem;
+    }
+
+    public String getImagemContentType() {
+        return imagemContentType;
+    }
+
+    public void setImagemContentType(String imagemContentType) {
+        this.imagemContentType = imagemContentType;
     }
 
     public String getDescricao() {
@@ -100,11 +131,11 @@ public class ItemConsumo {
         this.estadoItemPedido = estadoItemPedido;
     }
 
-    public LocalDateTime getDataCriacao() {
+    public ZonedDateTime getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(LocalDateTime dataCriacao) {
+    public void setDataCriacao(ZonedDateTime dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
@@ -124,11 +155,11 @@ public class ItemConsumo {
         this.origem = origem;
     }
 
-    public LocalDateTime getDataActualizaca() {
+    public ZonedDateTime getDataActualizaca() {
         return dataActualizaca;
     }
 
-    public void setDataActualizaca(LocalDateTime dataActualizaca) {
+    public void setDataActualizaca(ZonedDateTime dataActualizaca) {
         this.dataActualizaca = dataActualizaca;
     }
 
@@ -148,34 +179,35 @@ public class ItemConsumo {
         this.tipoBebida = tipoBebida;
     }
 
-    public Set<Cardapio> getCardapios() {
-        return cardapios;
+    public CardapioModel getCardapioModel() {
+        return cardapioModel;
     }
 
-    public void setCardapios(Set<Cardapio> cardapios) {
-        this.cardapios = cardapios;
+    public void setCardapioModel(CardapioModel cardapioModel) {
+        this.cardapioModel = cardapioModel;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ItemConsumo that = (ItemConsumo) o;
-        return Objects.equals(id, that.id) && Arrays.equals(imagem, that.imagem) && Objects.equals(descricao, that.descricao) && Objects.equals(preco, that.preco) && estadoItemPedido == that.estadoItemPedido && Objects.equals(dataCriacao, that.dataCriacao) && Objects.equals(cozinha, that.cozinha) && Objects.equals(origem, that.origem) && Objects.equals(dataActualizaca, that.dataActualizaca) && tipoItemConsumo == that.tipoItemConsumo && tipoBebida == that.tipoBebida && Objects.equals(cardapios, that.cardapios);
+        ItemConsumoModel that = (ItemConsumoModel) o;
+        return Objects.equals(id, that.id) && Arrays.equals(imagem, that.imagem) && Objects.equals(imagemContentType, that.imagemContentType) && Objects.equals(descricao, that.descricao) && Objects.equals(preco, that.preco) && estadoItemPedido == that.estadoItemPedido && Objects.equals(dataCriacao, that.dataCriacao) && Objects.equals(cozinha, that.cozinha) && Objects.equals(origem, that.origem) && Objects.equals(dataActualizaca, that.dataActualizaca) && tipoItemConsumo == that.tipoItemConsumo && tipoBebida == that.tipoBebida && Objects.equals(cardapioModel, that.cardapioModel);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, descricao, preco, estadoItemPedido, dataCriacao, cozinha, origem, dataActualizaca, tipoItemConsumo, tipoBebida, cardapios);
+        int result = Objects.hash(id, imagemContentType, descricao, preco, estadoItemPedido, dataCriacao, cozinha, origem, dataActualizaca, tipoItemConsumo, tipoBebida, cardapioModel);
         result = 31 * result + Arrays.hashCode(imagem);
         return result;
     }
 
     @Override
     public String toString() {
-        return "ItemConsumo{" +
+        return "ItemConsumoModel{" +
                 "id=" + id +
                 ", imagem=" + Arrays.toString(imagem) +
+                ", imagemContentType='" + imagemContentType + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", preco=" + preco +
                 ", estadoItemPedido=" + estadoItemPedido +
@@ -185,7 +217,7 @@ public class ItemConsumo {
                 ", dataActualizaca=" + dataActualizaca +
                 ", tipoItemConsumo=" + tipoItemConsumo +
                 ", tipoBebida=" + tipoBebida +
-                ", cardapios=" + cardapios +
+                ", cardapioModel=" + cardapioModel +
                 '}';
     }
 }

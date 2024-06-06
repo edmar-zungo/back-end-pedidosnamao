@@ -1,29 +1,31 @@
 package com.edmarzungo.pedidosnamao.domain;
 
 import com.edmarzungo.pedidosnamao.enumerations.EstadoItem;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-public class Mesa {
+public class MesaModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private long numero;
+    @NotNull
     private long quantidadeLugares;
+    @NotNull
+    @Enumerated(EnumType.STRING)
     private EstadoItem estadoItem;
+    @NotNull
     private String descricao;
 
-    public Mesa() {
+    public MesaModel() {
     }
 
-    public Mesa(UUID id, long numero, long quantidadeLugares, EstadoItem estadoItem, String descricao) {
+    public MesaModel(UUID id, long numero, long quantidadeLugares, EstadoItem estadoItem, String descricao) {
         this.id = id;
         this.numero = numero;
         this.quantidadeLugares = quantidadeLugares;
@@ -75,8 +77,8 @@ public class Mesa {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Mesa mesa = (Mesa) o;
-        return numero == mesa.numero && quantidadeLugares == mesa.quantidadeLugares && Objects.equals(id, mesa.id) && estadoItem == mesa.estadoItem && Objects.equals(descricao, mesa.descricao);
+        MesaModel mesaModel = (MesaModel) o;
+        return numero == mesaModel.numero && quantidadeLugares == mesaModel.quantidadeLugares && Objects.equals(id, mesaModel.id) && estadoItem == mesaModel.estadoItem && Objects.equals(descricao, mesaModel.descricao);
     }
 
     @Override
@@ -86,7 +88,7 @@ public class Mesa {
 
     @Override
     public String toString() {
-        return "Mesa{" +
+        return "MesaModel{" +
                 "id=" + id +
                 ", numero=" + numero +
                 ", quantidadeLugares=" + quantidadeLugares +
