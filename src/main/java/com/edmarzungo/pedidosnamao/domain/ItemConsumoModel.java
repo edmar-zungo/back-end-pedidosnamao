@@ -13,64 +13,43 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "item_consumo")
 public class ItemConsumoModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-
-    @Column(name = "imagem")
-    @Lob
-    private byte[] imagem;
-
-    @Column(name = "imagem_content_type")
-    private String imagemContentType;
-
-    @Column(name = "descricao")
     @NotBlank
     private String descricao;
     @NotNull
-    @Column(name = "preco")
     private Double preco;
     @NotNull
-    @Column(name = "estado_item_pedido")
     @Enumerated(EnumType.STRING)
     private EstadoItem estadoItemPedido;
     @NotNull
-    @Column(name = "data_criacao")
     private ZonedDateTime dataCriacao;
 
-    @Column(name = "cozinha")
     private String cozinha;
 
-    @Column(name = "origem")
     private String origem;
     @NotNull
-    @Column(name = "data_actualizacao")
     private ZonedDateTime dataActualizaca;
     @NotNull
-    @Column(name = "tipo_item_consumo")
     @Enumerated(EnumType.STRING)
     private TipoItemConsumo tipoItemConsumo;
 
-    @Column(name = "tipo_bebida")
     @Enumerated(EnumType.STRING)
     private TipoBebida tipoBebida;
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cardapio_id")
     private CardapioModel cardapioModel;
 
     public ItemConsumoModel() {
     }
 
-    public ItemConsumoModel(UUID id, byte[] imagem, String imagemContentType, String descricao, Double preco, EstadoItem estadoItemPedido, ZonedDateTime dataCriacao, String cozinha, String origem, ZonedDateTime dataActualizaca, TipoItemConsumo tipoItemConsumo, TipoBebida tipoBebida, CardapioModel cardapioModel) {
+    public ItemConsumoModel(UUID id, String descricao, Double preco, EstadoItem estadoItemPedido, ZonedDateTime dataCriacao, String cozinha, String origem, ZonedDateTime dataActualizaca, TipoItemConsumo tipoItemConsumo, TipoBebida tipoBebida, CardapioModel cardapioModel) {
         this.id = id;
-        this.imagem = imagem;
-        this.imagemContentType = imagemContentType;
         this.descricao = descricao;
         this.preco = preco;
         this.estadoItemPedido = estadoItemPedido;
@@ -89,22 +68,6 @@ public class ItemConsumoModel {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public byte[] getImagem() {
-        return imagem;
-    }
-
-    public void setImagem(byte[] imagem) {
-        this.imagem = imagem;
-    }
-
-    public String getImagemContentType() {
-        return imagemContentType;
-    }
-
-    public void setImagemContentType(String imagemContentType) {
-        this.imagemContentType = imagemContentType;
     }
 
     public String getDescricao() {
@@ -183,7 +146,7 @@ public class ItemConsumoModel {
         return cardapioModel;
     }
 
-    public void setCardapioModel(CardapioModel cardapioModel) {
+public void setCardapioModel(CardapioModel cardapioModel) {
         this.cardapioModel = cardapioModel;
     }
 
@@ -192,13 +155,13 @@ public class ItemConsumoModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ItemConsumoModel that = (ItemConsumoModel) o;
-        return Objects.equals(id, that.id) && Arrays.equals(imagem, that.imagem) && Objects.equals(imagemContentType, that.imagemContentType) && Objects.equals(descricao, that.descricao) && Objects.equals(preco, that.preco) && estadoItemPedido == that.estadoItemPedido && Objects.equals(dataCriacao, that.dataCriacao) && Objects.equals(cozinha, that.cozinha) && Objects.equals(origem, that.origem) && Objects.equals(dataActualizaca, that.dataActualizaca) && tipoItemConsumo == that.tipoItemConsumo && tipoBebida == that.tipoBebida && Objects.equals(cardapioModel, that.cardapioModel);
+        return Objects.equals(id, that.id) && Objects.equals(descricao, that.descricao) && Objects.equals(preco, that.preco) && estadoItemPedido == that.estadoItemPedido && Objects.equals(dataCriacao, that.dataCriacao) && Objects.equals(cozinha, that.cozinha) && Objects.equals(origem, that.origem) && Objects.equals(dataActualizaca, that.dataActualizaca) && tipoItemConsumo == that.tipoItemConsumo && tipoBebida == that.tipoBebida && Objects.equals(cardapioModel, that.cardapioModel);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, imagemContentType, descricao, preco, estadoItemPedido, dataCriacao, cozinha, origem, dataActualizaca, tipoItemConsumo, tipoBebida, cardapioModel);
-        result = 31 * result + Arrays.hashCode(imagem);
+        int result = Objects.hash(id, descricao, preco, estadoItemPedido, dataCriacao, cozinha, origem, dataActualizaca, tipoItemConsumo, tipoBebida, cardapioModel);
+        result = 31 * result;
         return result;
     }
 
@@ -206,8 +169,6 @@ public class ItemConsumoModel {
     public String toString() {
         return "ItemConsumoModel{" +
                 "id=" + id +
-                ", imagem=" + Arrays.toString(imagem) +
-                ", imagemContentType='" + imagemContentType + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", preco=" + preco +
                 ", estadoItemPedido=" + estadoItemPedido +

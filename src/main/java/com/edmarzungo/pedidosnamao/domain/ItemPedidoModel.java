@@ -10,10 +10,12 @@ import java.util.UUID;
 public class ItemPedidoModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @NotNull
-    private ItemConsumoModel itemConsumoModel;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_consumo_id")
+    private ItemConsumoModel itemConsumo;
     @NotNull
     private long quantidadeItemConsumo;
     @NotNull
@@ -28,9 +30,9 @@ public class ItemPedidoModel {
     public ItemPedidoModel() {
     }
 
-    public ItemPedidoModel(UUID id, ItemConsumoModel itemConsumoModel, long quantidadeItemConsumo, Double precoItemPedido, Double desconto, String descricao, PedidoModel pedidoModel) {
+    public ItemPedidoModel(UUID id, ItemConsumoModel itemConsumo, long quantidadeItemConsumo, Double precoItemPedido, Double desconto, String descricao, PedidoModel pedidoModel) {
         this.id = id;
-        this.itemConsumoModel = itemConsumoModel;
+        this.itemConsumo = itemConsumo;
         this.quantidadeItemConsumo = quantidadeItemConsumo;
         this.precoItemPedido = precoItemPedido;
         this.desconto = desconto;
@@ -47,11 +49,11 @@ public class ItemPedidoModel {
     }
 
     public ItemConsumoModel getItemConsumo() {
-        return itemConsumoModel;
+        return itemConsumo;
     }
 
-    public void setItemConsumo(ItemConsumoModel itemConsumoModel) {
-        this.itemConsumoModel = itemConsumoModel;
+    public void setItemConsumo(ItemConsumoModel itemConsumo) {
+        this.itemConsumo = itemConsumo;
     }
 
     public long getQuantidadeItemConsumo() {
@@ -99,19 +101,19 @@ public class ItemPedidoModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ItemPedidoModel that = (ItemPedidoModel) o;
-        return quantidadeItemConsumo == that.quantidadeItemConsumo && Objects.equals(id, that.id) && Objects.equals(itemConsumoModel, that.itemConsumoModel) && Objects.equals(precoItemPedido, that.precoItemPedido) && Objects.equals(desconto, that.desconto) && Objects.equals(descricao, that.descricao) && Objects.equals(pedidoModel, that.pedidoModel);
+        return quantidadeItemConsumo == that.quantidadeItemConsumo && Objects.equals(id, that.id) && Objects.equals(itemConsumo, that.itemConsumo) && Objects.equals(precoItemPedido, that.precoItemPedido) && Objects.equals(desconto, that.desconto) && Objects.equals(descricao, that.descricao) && Objects.equals(pedidoModel, that.pedidoModel);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, itemConsumoModel, quantidadeItemConsumo, precoItemPedido, desconto, descricao, pedidoModel);
+        return Objects.hash(id, itemConsumo, quantidadeItemConsumo, precoItemPedido, desconto, descricao, pedidoModel);
     }
 
     @Override
     public String toString() {
         return "ItemPedidoModel{" +
                 "id=" + id +
-                ", itemConsumoModel=" + itemConsumoModel +
+                ", itemConsumoModel=" + itemConsumo +
                 ", quantidadeItemConsumo=" + quantidadeItemConsumo +
                 ", precoItemPedido=" + precoItemPedido +
                 ", desconto=" + desconto +

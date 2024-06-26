@@ -10,7 +10,7 @@ import java.util.UUID;
 public class CardapioModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private String descricao;

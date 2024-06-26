@@ -13,13 +13,15 @@ import java.util.UUID;
 public class PedidoModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @NotNull
     private LocalDateTime dataCriacao;
     @NotNull
     private LocalDateTime dataActualizacao;
-    private MesaModel mesaModel;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mesa_id")
+    private MesaModel mesa;
     @NotNull
     @Enumerated(EnumType.STRING)
     private EstadoPedido estadoPedido;
@@ -37,11 +39,11 @@ public class PedidoModel {
     public PedidoModel() {
     }
 
-    public PedidoModel(UUID id, LocalDateTime dataCriacao, LocalDateTime dataActualizacao, MesaModel mesaModel, EstadoPedido estadoPedido, String descricao, boolean isDeliver, String enderecoDetalhado, LocalTime tempoEntrega, String descricaoEntrega, Double valorEntrega, Double totalPagar, Double totalPago, Double totalTroco) {
+    public PedidoModel(UUID id, LocalDateTime dataCriacao, LocalDateTime dataActualizacao, MesaModel mesa, EstadoPedido estadoPedido, String descricao, boolean isDeliver, String enderecoDetalhado, LocalTime tempoEntrega, String descricaoEntrega, Double valorEntrega, Double totalPagar, Double totalPago, Double totalTroco) {
         this.id = id;
         this.dataCriacao = dataCriacao;
         this.dataActualizacao = dataActualizacao;
-        this.mesaModel = mesaModel;
+        this.mesa = mesa;
         this.estadoPedido = estadoPedido;
         this.descricao = descricao;
         this.isDeliver = isDeliver;
@@ -78,12 +80,12 @@ public class PedidoModel {
         this.dataActualizacao = dataActualizacao;
     }
 
-    public MesaModel getMesaModel() {
-        return mesaModel;
+    public MesaModel getMesa() {
+        return mesa;
     }
 
-    public void setMesaModel(MesaModel mesaModel) {
-        this.mesaModel = mesaModel;
+    public void setMesa(MesaModel mesa) {
+        this.mesa = mesa;
     }
 
     public EstadoPedido getEstadoPedido() {
@@ -171,12 +173,12 @@ public class PedidoModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PedidoModel that = (PedidoModel) o;
-        return isDeliver == that.isDeliver && Objects.equals(id, that.id) && Objects.equals(dataCriacao, that.dataCriacao) && Objects.equals(dataActualizacao, that.dataActualizacao) && Objects.equals(mesaModel, that.mesaModel) && estadoPedido == that.estadoPedido && Objects.equals(descricao, that.descricao) && Objects.equals(enderecoDetalhado, that.enderecoDetalhado) && Objects.equals(tempoEntrega, that.tempoEntrega) && Objects.equals(descricaoEntrega, that.descricaoEntrega) && Objects.equals(valorEntrega, that.valorEntrega) && Objects.equals(totalPagar, that.totalPagar) && Objects.equals(totalPago, that.totalPago) && Objects.equals(totalTroco, that.totalTroco);
+        return isDeliver == that.isDeliver && Objects.equals(id, that.id) && Objects.equals(dataCriacao, that.dataCriacao) && Objects.equals(dataActualizacao, that.dataActualizacao) && Objects.equals(mesa, that.mesa) && estadoPedido == that.estadoPedido && Objects.equals(descricao, that.descricao) && Objects.equals(enderecoDetalhado, that.enderecoDetalhado) && Objects.equals(tempoEntrega, that.tempoEntrega) && Objects.equals(descricaoEntrega, that.descricaoEntrega) && Objects.equals(valorEntrega, that.valorEntrega) && Objects.equals(totalPagar, that.totalPagar) && Objects.equals(totalPago, that.totalPago) && Objects.equals(totalTroco, that.totalTroco);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dataCriacao, dataActualizacao, mesaModel, estadoPedido, descricao, isDeliver, enderecoDetalhado, tempoEntrega, descricaoEntrega, valorEntrega, totalPagar, totalPago, totalTroco);
+        return Objects.hash(id, dataCriacao, dataActualizacao, mesa, estadoPedido, descricao, isDeliver, enderecoDetalhado, tempoEntrega, descricaoEntrega, valorEntrega, totalPagar, totalPago, totalTroco);
     }
 
     @Override
@@ -185,7 +187,7 @@ public class PedidoModel {
                 "id=" + id +
                 ", dataCriacao=" + dataCriacao +
                 ", dataActualizacao=" + dataActualizacao +
-                ", mesaModel=" + mesaModel +
+                ", mesaModel=" + mesa +
                 ", estadoPedido=" + estadoPedido +
                 ", descricao='" + descricao + '\'' +
                 ", isDeliver=" + isDeliver +

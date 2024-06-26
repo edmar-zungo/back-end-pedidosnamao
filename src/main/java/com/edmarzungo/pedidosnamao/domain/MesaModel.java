@@ -11,7 +11,7 @@ import java.util.UUID;
 public class MesaModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private long numero;
     @NotNull
