@@ -13,9 +13,11 @@ public class MesaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private long numero;
+    private Long numero;
     @NotNull
-    private long quantidadeLugares;
+    private Long sequencia;
+    @NotNull
+    private Long quantidadeLugares;
     @NotNull
     @Enumerated(EnumType.STRING)
     private EstadoItem estadoMesa;
@@ -25,9 +27,10 @@ public class MesaModel {
     public MesaModel() {
     }
 
-    public MesaModel(UUID id, long numero, long quantidadeLugares, EstadoItem estadoMesa, String descricao) {
+    public MesaModel(UUID id, long numero, long sequencia, long quantidadeLugares, EstadoItem estadoMesa, String descricao) {
         this.id = id;
         this.numero = numero;
+        this.sequencia = sequencia;
         this.quantidadeLugares = quantidadeLugares;
         this.estadoMesa = estadoMesa;
         this.descricao = descricao;
@@ -41,19 +44,26 @@ public class MesaModel {
         this.id = id;
     }
 
-    public long getNumero() {
+    public Long getNumero() {
         return numero;
     }
 
-    public void setNumero(long numero) {
+    public void setNumero(Long numero) {
         this.numero = numero;
     }
+    public Long getSequencia() {
+        return sequencia;
+    }
 
-    public long getQuantidadeLugares() {
+    public void setSequencia(Long sequencia) {
+        this.sequencia = sequencia;
+    }
+
+    public Long getQuantidadeLugares() {
         return quantidadeLugares;
     }
 
-    public void setQuantidadeLugares(long quantidadeLugares) {
+    public void setQuantidadeLugares(Long quantidadeLugares) {
         this.quantidadeLugares = quantidadeLugares;
     }
 
@@ -78,12 +88,12 @@ public class MesaModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MesaModel mesaModel = (MesaModel) o;
-        return numero == mesaModel.numero && quantidadeLugares == mesaModel.quantidadeLugares && Objects.equals(id, mesaModel.id) && estadoMesa == mesaModel.estadoMesa && Objects.equals(descricao, mesaModel.descricao);
+        return numero.equals(mesaModel.numero) && sequencia.equals(mesaModel.sequencia) && quantidadeLugares.equals(mesaModel.quantidadeLugares) && Objects.equals(id, mesaModel.id) && estadoMesa == mesaModel.estadoMesa && Objects.equals(descricao, mesaModel.descricao);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, numero, quantidadeLugares, estadoMesa, descricao);
+        return Objects.hash(id, numero, sequencia,quantidadeLugares, estadoMesa, descricao);
     }
 
     @Override
@@ -91,9 +101,12 @@ public class MesaModel {
         return "MesaModel{" +
                 "id=" + id +
                 ", numero=" + numero +
+                "sequencia="+ sequencia +
                 ", quantidadeLugares=" + quantidadeLugares +
                 ", estadoItem=" + estadoMesa +
                 ", descricao='" + descricao + '\'' +
                 '}';
     }
+
+
 }

@@ -8,5 +8,5 @@ import com.edmarzungo.pedidosnamao.enumerations.TipoItemConsumo;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-public record ItemConsumoDTO(UUID id, String descricao, Double preco, EstadoItem estadoItemPedido, ZonedDateTime dataCriacao, String cozinha, String origem, ZonedDateTime dataActualizaca, TipoItemConsumo tipoItemConsumo, TipoBebida tipoBebida, CardapioModel cardapio) {
+public record ItemConsumoDTO(UUID id,byte[] imagem, String descricao, Double preco, EstadoItem estadoItemPedido, ZonedDateTime dataCriacao, String cozinha, String origem, ZonedDateTime dataActualizacao, TipoItemConsumo tipoItemConsumo, TipoBebida tipoBebida, CardapioModel cardapio) {
 }

@@ -17,7 +17,7 @@ public class ItemPedidoModel {
     @JoinColumn(name = "item_consumo_id")
     private ItemConsumoModel itemConsumo;
     @NotNull
-    private long quantidadeItemConsumo;
+    private Long quantidadeItemConsumo;
     @NotNull
     private Double precoItemPedido;
     private Double desconto;
