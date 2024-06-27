@@ -25,19 +25,20 @@ public class ItemPedidoModel {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private PedidoModel pedidoModel;
+    @JoinColumn(name = "pedido_id")
+    private PedidoModel pedido;
 
     public ItemPedidoModel() {
     }
 
-    public ItemPedidoModel(UUID id, ItemConsumoModel itemConsumo, long quantidadeItemConsumo, Double precoItemPedido, Double desconto, String descricao, PedidoModel pedidoModel) {
+    public ItemPedidoModel(UUID id, ItemConsumoModel itemConsumo, long quantidadeItemConsumo, Double precoItemPedido, Double desconto, String descricao, PedidoModel pedido) {
         this.id = id;
         this.itemConsumo = itemConsumo;
         this.quantidadeItemConsumo = quantidadeItemConsumo;
         this.precoItemPedido = precoItemPedido;
         this.desconto = desconto;
         this.descricao = descricao;
-        this.pedidoModel = pedidoModel;
+        this.pedido = pedido;
     }
 
     public UUID getId() {
@@ -89,11 +90,11 @@ public class ItemPedidoModel {
     }
 
     public PedidoModel getPedido() {
-        return pedidoModel;
+        return pedido;
     }
 
-    public void setPedido(PedidoModel pedidoModel) {
-        this.pedidoModel = pedidoModel;
+    public void setPedido(PedidoModel pedido) {
+        this.pedido = pedido;
     }
 
     @Override
@@ -101,12 +102,12 @@ public class ItemPedidoModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ItemPedidoModel that = (ItemPedidoModel) o;
-        return quantidadeItemConsumo == that.quantidadeItemConsumo && Objects.equals(id, that.id) && Objects.equals(itemConsumo, that.itemConsumo) && Objects.equals(precoItemPedido, that.precoItemPedido) && Objects.equals(desconto, that.desconto) && Objects.equals(descricao, that.descricao) && Objects.equals(pedidoModel, that.pedidoModel);
+        return quantidadeItemConsumo == that.quantidadeItemConsumo && Objects.equals(id, that.id) && Objects.equals(itemConsumo, that.itemConsumo) && Objects.equals(precoItemPedido, that.precoItemPedido) && Objects.equals(desconto, that.desconto) && Objects.equals(descricao, that.descricao) && Objects.equals(pedido, that.pedido);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, itemConsumo, quantidadeItemConsumo, precoItemPedido, desconto, descricao, pedidoModel);
+        return Objects.hash(id, itemConsumo, quantidadeItemConsumo, precoItemPedido, desconto, descricao, pedido);
     }
 
     @Override
@@ -118,7 +119,7 @@ public class ItemPedidoModel {
                 ", precoItemPedido=" + precoItemPedido +
                 ", desconto=" + desconto +
                 ", descricao='" + descricao + '\'' +
-                ", pedidos=" + pedidoModel +
+                ", pedidos=" + pedido +
                 '}';
     }
 }

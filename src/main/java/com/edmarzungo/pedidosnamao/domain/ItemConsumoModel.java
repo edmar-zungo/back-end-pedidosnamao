@@ -43,12 +43,12 @@ public class ItemConsumoModel {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cardapio_id")
-    private CardapioModel cardapioModel;
+    private CardapioModel cardapio;
 
     public ItemConsumoModel() {
     }
 
-    public ItemConsumoModel(UUID id, String descricao, Double preco, EstadoItem estadoItemPedido, ZonedDateTime dataCriacao, String cozinha, String origem, ZonedDateTime dataActualizaca, TipoItemConsumo tipoItemConsumo, TipoBebida tipoBebida, CardapioModel cardapioModel) {
+    public ItemConsumoModel(UUID id, String descricao, Double preco, EstadoItem estadoItemPedido, ZonedDateTime dataCriacao, String cozinha, String origem, ZonedDateTime dataActualizaca, TipoItemConsumo tipoItemConsumo, TipoBebida tipoBebida, CardapioModel cardapio) {
         this.id = id;
         this.descricao = descricao;
         this.preco = preco;
@@ -59,7 +59,7 @@ public class ItemConsumoModel {
         this.dataActualizaca = dataActualizaca;
         this.tipoItemConsumo = tipoItemConsumo;
         this.tipoBebida = tipoBebida;
-        this.cardapioModel = cardapioModel;
+        this.cardapio = cardapio;
     }
 
     public UUID getId() {
@@ -142,12 +142,12 @@ public class ItemConsumoModel {
         this.tipoBebida = tipoBebida;
     }
 
-    public CardapioModel getCardapioModel() {
-        return cardapioModel;
+    public CardapioModel getCardapio() {
+        return cardapio;
     }
 
-public void setCardapioModel(CardapioModel cardapioModel) {
-        this.cardapioModel = cardapioModel;
+public void setCardapio(CardapioModel cardapio) {
+        this.cardapio = cardapio;
     }
 
     @Override
@@ -155,12 +155,12 @@ public void setCardapioModel(CardapioModel cardapioModel) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ItemConsumoModel that = (ItemConsumoModel) o;
-        return Objects.equals(id, that.id) && Objects.equals(descricao, that.descricao) && Objects.equals(preco, that.preco) && estadoItemPedido == that.estadoItemPedido && Objects.equals(dataCriacao, that.dataCriacao) && Objects.equals(cozinha, that.cozinha) && Objects.equals(origem, that.origem) && Objects.equals(dataActualizaca, that.dataActualizaca) && tipoItemConsumo == that.tipoItemConsumo && tipoBebida == that.tipoBebida && Objects.equals(cardapioModel, that.cardapioModel);
+        return Objects.equals(id, that.id) && Objects.equals(descricao, that.descricao) && Objects.equals(preco, that.preco) && estadoItemPedido == that.estadoItemPedido && Objects.equals(dataCriacao, that.dataCriacao) && Objects.equals(cozinha, that.cozinha) && Objects.equals(origem, that.origem) && Objects.equals(dataActualizaca, that.dataActualizaca) && tipoItemConsumo == that.tipoItemConsumo && tipoBebida == that.tipoBebida && Objects.equals(cardapio, that.cardapio);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, descricao, preco, estadoItemPedido, dataCriacao, cozinha, origem, dataActualizaca, tipoItemConsumo, tipoBebida, cardapioModel);
+        int result = Objects.hash(id, descricao, preco, estadoItemPedido, dataCriacao, cozinha, origem, dataActualizaca, tipoItemConsumo, tipoBebida, cardapio);
         result = 31 * result;
         return result;
     }
@@ -178,7 +178,7 @@ public void setCardapioModel(CardapioModel cardapioModel) {
                 ", dataActualizaca=" + dataActualizaca +
                 ", tipoItemConsumo=" + tipoItemConsumo +
                 ", tipoBebida=" + tipoBebida +
-                ", cardapioModel=" + cardapioModel +
+                ", cardapioModel=" + cardapio +
                 '}';
     }
 }

@@ -18,18 +18,18 @@ public class MesaModel {
     private long quantidadeLugares;
     @NotNull
     @Enumerated(EnumType.STRING)
-    private EstadoItem estadoItem;
+    private EstadoItem estadoMesa;
     @NotNull
     private String descricao;
 
     public MesaModel() {
     }
 
-    public MesaModel(UUID id, long numero, long quantidadeLugares, EstadoItem estadoItem, String descricao) {
+    public MesaModel(UUID id, long numero, long quantidadeLugares, EstadoItem estadoMesa, String descricao) {
         this.id = id;
         this.numero = numero;
         this.quantidadeLugares = quantidadeLugares;
-        this.estadoItem = estadoItem;
+        this.estadoMesa = estadoMesa;
         this.descricao = descricao;
     }
 
@@ -57,12 +57,12 @@ public class MesaModel {
         this.quantidadeLugares = quantidadeLugares;
     }
 
-    public EstadoItem getEstadoItem() {
-        return estadoItem;
+    public EstadoItem getEstadoMesa() {
+        return estadoMesa;
     }
 
-    public void setEstadoItem(EstadoItem estadoItem) {
-        this.estadoItem = estadoItem;
+    public void setEstadoMesa(EstadoItem estadoMesa) {
+        this.estadoMesa = estadoMesa;
     }
 
     public String getDescricao() {
@@ -78,12 +78,12 @@ public class MesaModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MesaModel mesaModel = (MesaModel) o;
-        return numero == mesaModel.numero && quantidadeLugares == mesaModel.quantidadeLugares && Objects.equals(id, mesaModel.id) && estadoItem == mesaModel.estadoItem && Objects.equals(descricao, mesaModel.descricao);
+        return numero == mesaModel.numero && quantidadeLugares == mesaModel.quantidadeLugares && Objects.equals(id, mesaModel.id) && estadoMesa == mesaModel.estadoMesa && Objects.equals(descricao, mesaModel.descricao);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, numero, quantidadeLugares, estadoItem, descricao);
+        return Objects.hash(id, numero, quantidadeLugares, estadoMesa, descricao);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class MesaModel {
                 "id=" + id +
                 ", numero=" + numero +
                 ", quantidadeLugares=" + quantidadeLugares +
-                ", estadoItem=" + estadoItem +
+                ", estadoItem=" + estadoMesa +
                 ", descricao='" + descricao + '\'' +
                 '}';
     }
