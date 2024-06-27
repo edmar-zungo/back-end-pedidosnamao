@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface MesaService {
     MesaDTO save(MesaDTO mesa);
-    MesaDTO update(MesaDTO mesa);
+    MesaDTO update(MesaDTO mesa, UUID id);
 
     List<MesaDTO> getAll();
     Optional<MesaDTO> getOne(UUID mesaId);

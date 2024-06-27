@@ -41,7 +41,7 @@ public class PedidoModel {
     public PedidoModel() {
     }
 
-    public PedidoModel(UUID id, LocalDateTime dataCriacao, long sequencia, LocalDateTime dataActualizacao, MesaModel mesa, EstadoPedido estadoPedido, String descricao, boolean isDeliver, String enderecoDetalhado, LocalTime tempoEntrega, String descricaoEntrega, Double valorEntrega, Double totalPagar, Double totalPago, Double totalTroco) {
+    public PedidoModel(UUID id, LocalDateTime dataCriacao, Long sequencia, LocalDateTime dataActualizacao, MesaModel mesa, EstadoPedido estadoPedido, String descricao, Boolean isDeliver, String enderecoDetalhado, LocalTime tempoEntrega, String descricaoEntrega, Double valorEntrega, Double totalPagar, Double totalPago, Double totalTroco) {
         this.id = id;
         this.dataCriacao = dataCriacao;
         this.sequencia = sequencia;
@@ -114,12 +114,12 @@ public class PedidoModel {
         this.descricao = descricao;
     }
 
-    public boolean isDeliver() {
+    public Boolean isDeliver() {
         return isDeliver;
     }
 
-    public void setDeliver(boolean deliver) {
-        isDeliver = deliver;
+    public void setDeliver(Boolean isDeliver) {
+        isDeliver = isDeliver;
     }
 
     public String getEnderecoDetalhado() {

@@ -2,6 +2,7 @@ package com.edmarzungo.pedidosnamao.services.implementacions;
 
 import com.edmarzungo.pedidosnamao.domain.MesaModel;
 import com.edmarzungo.pedidosnamao.enumerations.EstadoItem;
+import com.edmarzungo.pedidosnamao.exceptions.GlobalExeception;
 import com.edmarzungo.pedidosnamao.repositories.MesaRepository;
 import com.edmarzungo.pedidosnamao.services.MesaService;
 import com.edmarzungo.pedidosnamao.services.dtos.MesaDTO;
@@ -36,8 +37,8 @@ public class MesaServiceImpl implements MesaService {
     }
 
     @Override
-    public MesaDTO update(MesaDTO mesa) {
-        MesaModel mesaToUpdate = mesaRepository.findById(mesa.id()).orElseThrow();
+    public MesaDTO update(MesaDTO mesa, UUID id) {
+        MesaModel mesaToUpdate = mesaRepository.findById(id).orElseThrow();
         mesaToUpdate.setSequencia(mesa.sequencia());
         mesaToUpdate.setNumero(mesa.numero());
         mesaToUpdate.setDescricao(mesa.descricao());
@@ -77,10 +78,10 @@ public class MesaServiceImpl implements MesaService {
     public MesaDTO init(MesaDTO mesaDTO) {
         MesaModel mesaModel = mesaMapper.mesaDTOToMesaModel(mesaDTO);
         if (mesaModel.getSequencia() != null && existeSequencia(mesaModel.getSequencia())){
-            throw new RuntimeException("Sequência existente!");
+            throw new GlobalExeception("Sequência existente!");
         }
         if (mesaModel.getNumero() != null && existeNumero(mesaModel.getNumero())){
-            throw new RuntimeException("Já existe uma mesa com esse número " + mesaModel.getNumero());
+            throw new GlobalExeception("Já existe uma mesa com esse número " + mesaModel.getNumero());
         }
 
         mesaModel.setSequencia(mesaModel.getSequencia() == null ? this.gerarSequencia() : mesaModel.getSequencia() );

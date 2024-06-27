@@ -7,5 +7,5 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
-public record PedidoDTO(UUID id, LocalDateTime dataCriacao, Long sequencia ,LocalDateTime dataActualizacao, MesaModel mesa, EstadoPedido estadoPedido, String descricao, boolean isDeliver, String enderecoDetalhado, LocalTime tempoEntrega, String descricaoEntrega, Double valorEntrega, Double totalPagar, Double totalPago, Double totalTroco) {
+public record PedidoDTO(UUID id, LocalDateTime dataCriacao, Long sequencia ,LocalDateTime dataActualizacao, MesaModel mesa, EstadoPedido estadoPedido, String descricao, Boolean isDeliver, String enderecoDetalhado, LocalTime tempoEntrega, String descricaoEntrega, Double valorEntrega, Double totalPagar, Double totalPago, Double totalTroco) {
 }
