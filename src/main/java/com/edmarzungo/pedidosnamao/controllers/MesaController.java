@@ -39,7 +39,7 @@ public class MesaController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<MesaDTO> getOne(@PathVariable(value = "id") UUID id){
-        MesaDTO mesaResult = mesaService.getOne(id).orElseThrow();
+        MesaDTO mesaResult = mesaService.getOne(id);
         return new ResponseEntity<>(mesaResult, HttpStatus.OK);
     }
 

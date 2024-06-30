@@ -11,10 +11,12 @@ public interface CardapioMapper {
     @Mapping(target = "id", source = "id")
     @Mapping(target = "descricao", source = "descricao")
     @Mapping(target = "tipoItemConsumo", source = "tipoItemConsumo")
+    @Mapping(target = "itensConsumo", source = "itensConsumo")
     CardapioDTO cardapioTocardapioDTO(CardapioModel cardapioModel);
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "descricao", source = "descricao")
     @Mapping(target = "tipoItemConsumo", source = "tipoItemConsumo")
+    @Mapping(target = "itensConsumo", source = "itensConsumo")
     CardapioModel cardapioDTOToCardapioModel(CardapioDTO cardapioDTO);
 }

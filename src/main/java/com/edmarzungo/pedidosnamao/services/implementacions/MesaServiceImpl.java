@@ -1,10 +1,12 @@
 package com.edmarzungo.pedidosnamao.services.implementacions;
 
+import com.edmarzungo.pedidosnamao.domain.CardapioModel;
 import com.edmarzungo.pedidosnamao.domain.MesaModel;
 import com.edmarzungo.pedidosnamao.enumerations.EstadoItem;
 import com.edmarzungo.pedidosnamao.exceptions.GlobalExeception;
 import com.edmarzungo.pedidosnamao.repositories.MesaRepository;
 import com.edmarzungo.pedidosnamao.services.MesaService;
+import com.edmarzungo.pedidosnamao.services.dtos.CardapioDTO;
 import com.edmarzungo.pedidosnamao.services.dtos.MesaDTO;
 import com.edmarzungo.pedidosnamao.services.mappers.MesaMapper;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,7 @@ public class MesaServiceImpl implements MesaService {
 
     @Override
     public MesaDTO update(MesaDTO mesa, UUID id) {
-        MesaModel mesaToUpdate = mesaRepository.findById(id).orElseThrow();
+        MesaModel mesaToUpdate = mesaRepository.findById(id).orElseThrow(() -> new GlobalExeception("Nenhuma mesa encontrada!"));
         mesaToUpdate.setSequencia(mesa.sequencia());
         mesaToUpdate.setNumero(mesa.numero());
         mesaToUpdate.setDescricao(mesa.descricao());
@@ -57,8 +59,15 @@ public class MesaServiceImpl implements MesaService {
     }
 
     @Override
-    public Optional<MesaDTO> getOne(UUID mesaId) {
-        return mesaRepository.findById(mesaId).map(mesaMapper::mesaToMesaDTO);
+    public MesaDTO getOne(UUID mesaId) {
+        Optional<MesaModel> mesaResult = mesaRepository.findById(mesaId);
+        MesaDTO mesaDTO = null;
+        if (mesaResult.isPresent()){
+            mesaDTO = mesaMapper.mesaToMesaDTO(mesaResult.get());
+        } else {
+            throw new GlobalExeception("Nenhum Cardapio encontrado!");
+        }
+        return mesaDTO;
     }
 
     @Override

@@ -12,7 +12,7 @@ public interface MesaService {
     MesaDTO update(MesaDTO mesa, UUID id);
 
     List<MesaDTO> getAll();
-    Optional<MesaDTO> getOne(UUID mesaId);
+    MesaDTO getOne(UUID mesaId);
     void delete(UUID mesaId);
 
     Long gerarSequencia();
