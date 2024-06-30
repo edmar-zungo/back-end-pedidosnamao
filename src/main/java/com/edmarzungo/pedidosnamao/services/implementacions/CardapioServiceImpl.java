@@ -74,13 +74,4 @@ public class CardapioServiceImpl implements CardapioService {
         cardapioRepository.deleteById(cardapioId);
     }
 
-    @Override
-    public Long gerarSequencia() {
-        return null;
-    }
-
-    @Override
-    public CardapioDTO init(CardapioDTO cardapioDTO) {
-        return null;
-    }
 }

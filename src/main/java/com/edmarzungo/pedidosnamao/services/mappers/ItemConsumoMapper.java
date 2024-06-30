@@ -20,6 +20,7 @@ public interface ItemConsumoMapper {
     @Mapping(target = "tipoItemConsumo", source = "tipoItemConsumo")
     @Mapping(target = "tipoBebida", source = "tipoBebida")
     @Mapping(target = "cardapio", source = "cardapio")
+    @Mapping(target = "itemPedido", source = "itemPedido")
     ItemConsumoDTO itemConsumoModelToItemConsumoDTO(ItemConsumoModel itemConsumoModel);
     @Mapping(target = "id", source = "id")
     @Mapping(target = "imagem", source = "imagem")
@@ -32,6 +33,6 @@ public interface ItemConsumoMapper {
     @Mapping(target = "dataActualizacao", source = "dataActualizacao")
     @Mapping(target = "tipoItemConsumo", source = "tipoItemConsumo")
     @Mapping(target = "tipoBebida", source = "tipoBebida")
-    @Mapping(target = "cardapio", source = "cardapio")
+    @Mapping(target = "itemPedido", source = "itemPedido")
     ItemConsumoModel itemConsumoDTOToItemConsumoModel(ItemConsumoDTO itemConsumoDTO);
 }

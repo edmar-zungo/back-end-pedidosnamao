@@ -16,7 +16,4 @@ public interface CardapioService {
     CardapioDTO getOne(UUID cardapioId);
     void delete(UUID cardapioId);
 
-    Long gerarSequencia();
-
-    CardapioDTO init(CardapioDTO cardapioDTO);
 }
