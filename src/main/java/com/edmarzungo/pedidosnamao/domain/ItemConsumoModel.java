@@ -47,6 +47,10 @@ public class ItemConsumoModel {
     @JoinColumn(name = "cardapio_id")
     private CardapioModel cardapio;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_pedido_id")
+    private ItemPedidoModel itemPedido;
+
     public ItemConsumoModel() {
     }
 
@@ -153,6 +157,14 @@ public void setCardapio(CardapioModel cardapio) {
         this.cardapio = cardapio;
     }
 
+    public ItemPedidoModel getItemPedido() {
+        return itemPedido;
+    }
+
+    public void setItemPedido(ItemPedidoModel itemPedido) {
+        this.itemPedido = itemPedido;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -193,4 +205,6 @@ public void setCardapio(CardapioModel cardapio) {
     public void setImagem(byte[] imagem) {
         this.imagem = imagem;
     }
+
+
 }

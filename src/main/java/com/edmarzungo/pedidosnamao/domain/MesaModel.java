@@ -23,6 +23,9 @@ public class MesaModel {
     private EstadoItem estadoMesa;
     @NotNull
     private String descricao;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pedido_id")
+    private PedidoModel pedido;
 
     public MesaModel() {
     }
@@ -82,6 +85,13 @@ public class MesaModel {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+    public PedidoModel getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(PedidoModel pedido) {
+        this.pedido = pedido;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -107,6 +117,7 @@ public class MesaModel {
                 ", descricao='" + descricao + '\'' +
                 '}';
     }
+
 
 
 }

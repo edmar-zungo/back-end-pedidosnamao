@@ -6,7 +6,9 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -38,10 +40,15 @@ public class PedidoModel {
     private Double totalPago;
     private Double totalTroco;
 
+    @NotNull
+    @OneToMany
+    @JoinColumn(name = "item_pedido_id")
+    private Set<ItemPedidoModel> itensPedido;
+
     public PedidoModel() {
     }
 
-    public PedidoModel(UUID id, LocalDateTime dataCriacao, Long sequencia, LocalDateTime dataActualizacao, MesaModel mesa, EstadoPedido estadoPedido, String descricao, Boolean isDeliver, String enderecoDetalhado, LocalTime tempoEntrega, String descricaoEntrega, Double valorEntrega, Double totalPagar, Double totalPago, Double totalTroco) {
+    public PedidoModel(UUID id, LocalDateTime dataCriacao, Long sequencia, LocalDateTime dataActualizacao, MesaModel mesa, EstadoPedido estadoPedido, String descricao, Boolean isDeliver, String enderecoDetalhado, LocalTime tempoEntrega, String descricaoEntrega, Double valorEntrega, Double totalPagar, Double totalPago, Double totalTroco, Set<ItemPedidoModel> itensPedido) {
         this.id = id;
         this.dataCriacao = dataCriacao;
         this.sequencia = sequencia;
@@ -57,6 +64,7 @@ public class PedidoModel {
         this.totalPagar = totalPagar;
         this.totalPago = totalPago;
         this.totalTroco = totalTroco;
+        this.itensPedido = itensPedido;
     }
 
     public UUID getId() {
@@ -176,6 +184,28 @@ public class PedidoModel {
 
     public void setTotalTroco(Double totalTroco) {
         this.totalTroco = totalTroco;
+    }
+
+
+    public Set<ItemPedidoModel> getItemPedido() {
+        return itensPedido;
+    }
+
+    public void setItemPedido(Set<ItemPedidoModel> itemPedido) {
+        this.itensPedido = itemPedido;
+    }
+
+
+    // Método para adicionar um item de consumo
+    public void addItemConsumo(ItemPedidoModel itemPedido) {
+        itensPedido.add(itemPedido);
+        itemPedido.setPedido(this);
+    }
+
+    // Método para remover um item de consumo
+    public void removeItemConsumo(ItemPedidoModel itemPedido) {
+        itensPedido.remove(itemPedido);
+        itemPedido.setPedido(null);
     }
 
     @Override
