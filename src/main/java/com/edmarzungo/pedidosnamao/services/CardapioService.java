@@ -4,7 +4,6 @@ import com.edmarzungo.pedidosnamao.services.dtos.CardapioDTO;
 import com.edmarzungo.pedidosnamao.services.dtos.MesaDTO;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface CardapioService {

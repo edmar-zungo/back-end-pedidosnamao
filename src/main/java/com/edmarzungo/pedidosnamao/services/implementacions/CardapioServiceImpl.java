@@ -36,7 +36,8 @@ public class CardapioServiceImpl implements CardapioService {
 
     @Override
     public CardapioDTO update(CardapioDTO cardapioDTO, UUID cardapioId) {
-        CardapioModel cardapioToUpdate = cardapioRepository.findById(cardapioId).orElseThrow(() -> new GlobalExeception("Nenhum Cardapio encontrado!"));
+        CardapioModel cardapioToUpdate = cardapioRepository.findById(cardapioId)
+                .orElseThrow(() -> new GlobalExeception("Nenhum Cardapio encontrado!"));
 
         cardapioToUpdate.setDescricao(cardapioDTO.descricao());
         cardapioToUpdate.setItensConsumo(cardapioDTO.itensConsumo());
@@ -60,12 +61,13 @@ public class CardapioServiceImpl implements CardapioService {
     @Override
     public CardapioDTO getOne(UUID cardapioId) {
         Optional<CardapioModel> cardapioResult = cardapioRepository.findById(cardapioId);
-        CardapioDTO cardapioDTO = null;
-        if (cardapioResult.isPresent()){
-            cardapioDTO = cardapioMapper.cardapioTocardapioDTO(cardapioResult.get());
-        } else {
+
+        if (cardapioResult.isEmpty()){
             throw new GlobalExeception("Nenhum Cardapio encontrado!");
         }
+
+        CardapioDTO cardapioDTO = cardapioMapper.cardapioTocardapioDTO(cardapioResult.get());
+
         return cardapioDTO;
     }
 

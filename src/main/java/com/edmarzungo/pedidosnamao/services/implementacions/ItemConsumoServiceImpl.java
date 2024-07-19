@@ -69,12 +69,13 @@ public class ItemConsumoServiceImpl implements ItemConsumoService {
     @Override
     public ItemConsumoDTO getOne(UUID itemConsumoId) {
         Optional<ItemConsumoModel> itemConsumoResult = itemConsumoRepository.findById(itemConsumoId);
-        ItemConsumoDTO itemConsumoDTO = null;
-        if (itemConsumoResult.isPresent()){
-            itemConsumoDTO = itemConsumoMapper.itemConsumoModelToItemConsumoDTO(itemConsumoResult.get());
-        } else {
+
+        if (itemConsumoResult.isEmpty()){
             throw new GlobalExeception("Nenhum Item de Consumo encontrado!");
+
         }
+
+        ItemConsumoDTO itemConsumoDTO = itemConsumoMapper.itemConsumoModelToItemConsumoDTO(itemConsumoResult.get());
         return itemConsumoDTO;
     }
 

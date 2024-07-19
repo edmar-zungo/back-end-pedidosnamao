@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -21,6 +20,8 @@ public class PedidoModel {
     private LocalDateTime dataCriacao;
     @NotNull
     private Long sequencia;
+    @NotNull
+    private String numero;
     @NotNull
     private LocalDateTime dataActualizacao;
     @OneToOne(fetch = FetchType.LAZY)
@@ -48,10 +49,11 @@ public class PedidoModel {
     public PedidoModel() {
     }
 
-    public PedidoModel(UUID id, LocalDateTime dataCriacao, Long sequencia, LocalDateTime dataActualizacao, MesaModel mesa, EstadoPedido estadoPedido, String descricao, Boolean isDeliver, String enderecoDetalhado, LocalTime tempoEntrega, String descricaoEntrega, Double valorEntrega, Double totalPagar, Double totalPago, Double totalTroco, Set<ItemPedidoModel> itensPedido) {
+    public PedidoModel(UUID id, LocalDateTime dataCriacao, Long sequencia, String numero, LocalDateTime dataActualizacao, MesaModel mesa, EstadoPedido estadoPedido, String descricao, Boolean isDeliver, String enderecoDetalhado, LocalTime tempoEntrega, String descricaoEntrega, Double valorEntrega, Double totalPagar, Double totalPago, Double totalTroco, Set<ItemPedidoModel> itensPedido) {
         this.id = id;
         this.dataCriacao = dataCriacao;
         this.sequencia = sequencia;
+        this.numero = numero;
         this.dataActualizacao = dataActualizacao;
         this.mesa = mesa;
         this.estadoPedido = estadoPedido;
@@ -98,6 +100,14 @@ public class PedidoModel {
         this.sequencia = sequencia;
     }
 
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
     public MesaModel getMesa() {
         return mesa;
     }
@@ -122,7 +132,7 @@ public class PedidoModel {
         this.descricao = descricao;
     }
 
-    public Boolean isDeliver() {
+    public Boolean getIsDeliver() {
         return isDeliver;
     }
 
@@ -213,12 +223,12 @@ public class PedidoModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PedidoModel that = (PedidoModel) o;
-        return isDeliver == that.isDeliver && Objects.equals(id, that.id) && Objects.equals(dataCriacao, that.dataCriacao) && Objects.equals(sequencia, that.sequencia) && Objects.equals(dataActualizacao, that.dataActualizacao)&& Objects.equals(mesa, that.mesa) && estadoPedido == that.estadoPedido && Objects.equals(descricao, that.descricao) && Objects.equals(enderecoDetalhado, that.enderecoDetalhado) && Objects.equals(tempoEntrega, that.tempoEntrega) && Objects.equals(descricaoEntrega, that.descricaoEntrega) && Objects.equals(valorEntrega, that.valorEntrega) && Objects.equals(totalPagar, that.totalPagar) && Objects.equals(totalPago, that.totalPago) && Objects.equals(totalTroco, that.totalTroco);
+        return isDeliver == that.isDeliver && Objects.equals(id, that.id) && Objects.equals(dataCriacao, that.dataCriacao) && Objects.equals(sequencia, that.sequencia) && Objects.equals(numero, that.numero) && Objects.equals(dataActualizacao, that.dataActualizacao)&& Objects.equals(mesa, that.mesa) && estadoPedido == that.estadoPedido && Objects.equals(descricao, that.descricao) && Objects.equals(enderecoDetalhado, that.enderecoDetalhado) && Objects.equals(tempoEntrega, that.tempoEntrega) && Objects.equals(descricaoEntrega, that.descricaoEntrega) && Objects.equals(valorEntrega, that.valorEntrega) && Objects.equals(totalPagar, that.totalPagar) && Objects.equals(totalPago, that.totalPago) && Objects.equals(totalTroco, that.totalTroco);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dataCriacao, sequencia,dataActualizacao, mesa, estadoPedido, descricao, isDeliver, enderecoDetalhado, tempoEntrega, descricaoEntrega, valorEntrega, totalPagar, totalPago, totalTroco);
+        return Objects.hash(id, dataCriacao, sequencia, numero,dataActualizacao, mesa, estadoPedido, descricao, isDeliver, enderecoDetalhado, tempoEntrega, descricaoEntrega, valorEntrega, totalPagar, totalPago, totalTroco);
     }
 
     @Override
@@ -227,11 +237,12 @@ public class PedidoModel {
                 "id=" + id +
                 ", dataCriacao=" + dataCriacao +
                 "sequencia=" + sequencia +
+                "numero=" + numero +
                 ", dataActualizacao=" + dataActualizacao +
                 ", mesaModel=" + mesa +
                 ", estadoPedido=" + estadoPedido +
                 ", descricao='" + descricao + '\'' +
-                ", isDeliver=" + isDeliver +
+                ", getIsDeliver=" + isDeliver +
                 ", enderecoDetalhado='" + enderecoDetalhado + '\'' +
                 ", tempoEntrega=" + tempoEntrega +
                 ", descricaoEntrega='" + descricaoEntrega + '\'' +
@@ -241,6 +252,4 @@ public class PedidoModel {
                 ", totalTroco=" + totalTroco +
                 '}';
     }
-
-
 }

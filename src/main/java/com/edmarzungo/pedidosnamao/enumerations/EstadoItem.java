@@ -2,5 +2,7 @@ package com.edmarzungo.pedidosnamao.enumerations;
 
 public enum EstadoItem {
     DISPONIVEL,
-    INDISPONIVEL
+    INDISPONIVEL,
+    RESERVADO,
+    EM_FALTA
 }

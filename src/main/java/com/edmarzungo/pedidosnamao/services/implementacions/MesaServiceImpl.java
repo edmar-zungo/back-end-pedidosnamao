@@ -61,12 +61,13 @@ public class MesaServiceImpl implements MesaService {
     @Override
     public MesaDTO getOne(UUID mesaId) {
         Optional<MesaModel> mesaResult = mesaRepository.findById(mesaId);
-        MesaDTO mesaDTO = null;
-        if (mesaResult.isPresent()){
-            mesaDTO = mesaMapper.mesaToMesaDTO(mesaResult.get());
-        } else {
+        if (mesaResult.isEmpty()){
             throw new GlobalExeception("Nenhum Cardapio encontrado!");
+
         }
+
+        MesaDTO mesaDTO = mesaMapper.mesaToMesaDTO(mesaResult.get());
+
         return mesaDTO;
     }
 
