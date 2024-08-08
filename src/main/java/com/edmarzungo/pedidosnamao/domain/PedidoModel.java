@@ -32,7 +32,7 @@ public class PedidoModel {
     private EstadoPedido estadoPedido;
     private String descricao;
     private Boolean isDeliver;
-    private String enderecoDetalhado;
+    private String enderecoEntregaDetalhado;
     private LocalTime tempoEntrega;
     private String descricaoEntrega;
     private Double valorEntrega;
@@ -49,7 +49,7 @@ public class PedidoModel {
     public PedidoModel() {
     }
 
-    public PedidoModel(UUID id, LocalDateTime dataCriacao, Long sequencia, String numero, LocalDateTime dataActualizacao, MesaModel mesa, EstadoPedido estadoPedido, String descricao, Boolean isDeliver, String enderecoDetalhado, LocalTime tempoEntrega, String descricaoEntrega, Double valorEntrega, Double totalPagar, Double totalPago, Double totalTroco, Set<ItemPedidoModel> itensPedido) {
+    public PedidoModel(UUID id, LocalDateTime dataCriacao, Long sequencia, String numero, LocalDateTime dataActualizacao, MesaModel mesa, EstadoPedido estadoPedido, String descricao, Boolean isDeliver, String enderecoEntregaDetalhado, LocalTime tempoEntrega, String descricaoEntrega, Double valorEntrega, Double totalPagar, Double totalPago, Double totalTroco, Set<ItemPedidoModel> itensPedido) {
         this.id = id;
         this.dataCriacao = dataCriacao;
         this.sequencia = sequencia;
@@ -59,7 +59,7 @@ public class PedidoModel {
         this.estadoPedido = estadoPedido;
         this.descricao = descricao;
         this.isDeliver = isDeliver;
-        this.enderecoDetalhado = enderecoDetalhado;
+        this.enderecoEntregaDetalhado = enderecoEntregaDetalhado;
         this.tempoEntrega = tempoEntrega;
         this.descricaoEntrega = descricaoEntrega;
         this.valorEntrega = valorEntrega;
@@ -132,7 +132,7 @@ public class PedidoModel {
         this.descricao = descricao;
     }
 
-    public Boolean getIsDeliver() {
+    public Boolean isDeliver() {
         return isDeliver;
     }
 
@@ -140,12 +140,12 @@ public class PedidoModel {
         isDeliver = isDeliver;
     }
 
-    public String getEnderecoDetalhado() {
-        return enderecoDetalhado;
+    public String getEnderecoEntregaDetalhado() {
+        return enderecoEntregaDetalhado;
     }
 
-    public void setEnderecoDetalhado(String enderecoDetalhado) {
-        this.enderecoDetalhado = enderecoDetalhado;
+    public void setEnderecoEntregaDetalhado(String enderecoEntregaDetalhado) {
+        this.enderecoEntregaDetalhado = enderecoEntregaDetalhado;
     }
 
     public LocalTime getTempoEntrega() {
@@ -223,12 +223,12 @@ public class PedidoModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PedidoModel that = (PedidoModel) o;
-        return isDeliver == that.isDeliver && Objects.equals(id, that.id) && Objects.equals(dataCriacao, that.dataCriacao) && Objects.equals(sequencia, that.sequencia) && Objects.equals(numero, that.numero) && Objects.equals(dataActualizacao, that.dataActualizacao)&& Objects.equals(mesa, that.mesa) && estadoPedido == that.estadoPedido && Objects.equals(descricao, that.descricao) && Objects.equals(enderecoDetalhado, that.enderecoDetalhado) && Objects.equals(tempoEntrega, that.tempoEntrega) && Objects.equals(descricaoEntrega, that.descricaoEntrega) && Objects.equals(valorEntrega, that.valorEntrega) && Objects.equals(totalPagar, that.totalPagar) && Objects.equals(totalPago, that.totalPago) && Objects.equals(totalTroco, that.totalTroco);
+        return isDeliver == that.isDeliver && Objects.equals(id, that.id) && Objects.equals(dataCriacao, that.dataCriacao) && Objects.equals(sequencia, that.sequencia) && Objects.equals(numero, that.numero) && Objects.equals(dataActualizacao, that.dataActualizacao)&& Objects.equals(mesa, that.mesa) && estadoPedido == that.estadoPedido && Objects.equals(descricao, that.descricao) && Objects.equals(enderecoEntregaDetalhado, that.enderecoEntregaDetalhado) && Objects.equals(tempoEntrega, that.tempoEntrega) && Objects.equals(descricaoEntrega, that.descricaoEntrega) && Objects.equals(valorEntrega, that.valorEntrega) && Objects.equals(totalPagar, that.totalPagar) && Objects.equals(totalPago, that.totalPago) && Objects.equals(totalTroco, that.totalTroco);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dataCriacao, sequencia, numero,dataActualizacao, mesa, estadoPedido, descricao, isDeliver, enderecoDetalhado, tempoEntrega, descricaoEntrega, valorEntrega, totalPagar, totalPago, totalTroco);
+        return Objects.hash(id, dataCriacao, sequencia, numero,dataActualizacao, mesa, estadoPedido, descricao, isDeliver, enderecoEntregaDetalhado, tempoEntrega, descricaoEntrega, valorEntrega, totalPagar, totalPago, totalTroco);
     }
 
     @Override
@@ -243,7 +243,7 @@ public class PedidoModel {
                 ", estadoPedido=" + estadoPedido +
                 ", descricao='" + descricao + '\'' +
                 ", getIsDeliver=" + isDeliver +
-                ", enderecoDetalhado='" + enderecoDetalhado + '\'' +
+                ", enderecoEntregaDetalhado='" + enderecoEntregaDetalhado + '\'' +
                 ", tempoEntrega=" + tempoEntrega +
                 ", descricaoEntrega='" + descricaoEntrega + '\'' +
                 ", valorEntrega=" + valorEntrega +

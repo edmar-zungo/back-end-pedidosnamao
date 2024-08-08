@@ -49,7 +49,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedidoToUpdate.setDataCriacao(pedidoDTO.dataCriacao());
         pedidoToUpdate.setDeliver(pedidoDTO.isDeliver());
         pedidoToUpdate.setDescricaoEntrega(pedidoDTO.descricaoEntrega());
-        pedidoToUpdate.setEnderecoDetalhado(pedidoDTO.enderecoDetalhado());
+        pedidoToUpdate.setEnderecoEntregaDetalhado(pedidoDTO.enderecoEntregaDetalhado());
         pedidoToUpdate.setMesa(pedidoDTO.mesa());
         pedidoToUpdate.setTempoEntrega(pedidoDTO.tempoEntrega());
         pedidoToUpdate.setTotalPagar(pedidoDTO.totalPagar());
@@ -104,20 +104,35 @@ public class PedidoServiceImpl implements PedidoService {
         pedidoModel.setEstadoPedido( pedidoModel.getEstadoPedido() == null ? EstadoPedido.PENDENTE : pedidoModel.getEstadoPedido() );
         pedidoModel.setDataCriacao( pedidoModel.getDataCriacao() == null ? LocalDateTime.now() : pedidoModel.getDataCriacao() );
         pedidoModel.setDataActualizacao( pedidoModel.getDataActualizacao() == null ? LocalDateTime.now() : pedidoModel.getDataActualizacao() );
-        pedidoModel.setDeliver( pedidoModel.getIsDeliver() == null ? false : pedidoModel.getIsDeliver() );
+        pedidoModel.setDeliver( pedidoModel.isDeliver() == null ? false : pedidoModel.isDeliver() );
 
-        if (pedidoModel.getIsDeliver().equals(false) && pedidoModel.getMesa() == null){
+        if (pedidoModel.isDeliver().equals(false) && pedidoModel.getMesa() == null){
             throw new GlobalExeception("Adicione uma mesa!");
         }
 
-        if (pedidoModel.getIsDeliver().equals(false) && (pedidoModel.getMesa().getEstadoMesa().equals(EstadoItem.RESERVADO) || pedidoModel.getMesa().getEstadoMesa().equals(EstadoItem.INDISPONIVEL))){
+        if (pedidoModel.isDeliver().equals(false) && (pedidoModel.getMesa().getEstadoMesa().equals(EstadoItem.RESERVADO) || pedidoModel.getMesa().getEstadoMesa().equals(EstadoItem.INDISPONIVEL))){
             throw new GlobalExeception("A mesa escolhida encontra-se indisponível no momento!");
         }
 
-        pedidoModel.setValorEntrega(pedidoDTO.valorEntrega() == null ?  ZERO : pedidoDTO.valorEntrega());
-        pedidoModel.setTotalPagar(pedidoModel.getTotalPagar() == null ? ZERO : pedidoModel.getTotalPagar() );
+        pedidoModel.setTotalPagar(pedidoModel.getTotalPagar() == null ? ZERO : pedidoModel.getTotalPagar());
+
+        if (pedidoModel.isDeliver().equals(true)){
+            if (pedidoModel.getEnderecoEntregaDetalhado() == null){
+                throw new GlobalExeception("Adicione o endereço de entrega, de forma detalhada.");
+            }
+
+            pedidoModel.setDescricaoEntrega( geraDesdcricaoPedido(pedidoDTO) );
+            pedidoModel.setTempoEntrega(LocalTime.of(1, 20));
+
+            pedidoModel.setValorEntrega(pedidoDTO.valorEntrega() == null ?  ZERO : pedidoDTO.valorEntrega());
+            pedidoModel.setTotalPagar( totalPagar(pedidoDTO.totalPagar(), pedidoDTO.valorEntrega()) );
+        }
+
+
+
         pedidoModel.setTotalPago(pedidoDTO.totalPago() == null ? ZERO : pedidoModel.getTotalPago() );
         pedidoModel.setTotalTroco(pedidoModel.getTotalTroco() == null ? ZERO : pedidoModel.getTotalTroco() );
+
 
         return pedidoDTO;
     }
@@ -147,5 +162,16 @@ public class PedidoServiceImpl implements PedidoService {
         return pedidoRepository.findAll()
                 .stream()
                 .anyMatch(x -> x.getNumero().equals(numero));
+    }
+
+    private String geraDesdcricaoPedido(PedidoDTO pedidoDTO){
+        String descricao = null;
+
+        descricao = "Pedido número: " + pedidoDTO.numero() + ", para o endereço: " + pedidoDTO.enderecoEntregaDetalhado() + ", na data e hora: " + pedidoDTO.dataActualizacao() + ", no valor de: " + pedidoDTO.totalPagar().toString();
+
+        return descricao;
+    }
+    private Double totalPagar(Double valorPagar, Double valorEntrega){
+        return valorPagar + valorEntrega;
     }
 }
