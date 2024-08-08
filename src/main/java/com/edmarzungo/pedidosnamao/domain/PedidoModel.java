@@ -41,11 +41,6 @@ public class PedidoModel {
     private Double totalPago;
     private Double totalTroco;
 
-    @NotNull
-    @OneToMany
-    @JoinColumn(name = "item_pedido_id")
-    private Set<ItemPedidoModel> itensPedido;
-
     public PedidoModel() {
     }
 
@@ -66,7 +61,6 @@ public class PedidoModel {
         this.totalPagar = totalPagar;
         this.totalPago = totalPago;
         this.totalTroco = totalTroco;
-        this.itensPedido = itensPedido;
     }
 
     public UUID getId() {
@@ -197,26 +191,19 @@ public class PedidoModel {
     }
 
 
-    public Set<ItemPedidoModel> getItemPedido() {
-        return itensPedido;
-    }
-
-    public void setItemPedido(Set<ItemPedidoModel> itemPedido) {
-        this.itensPedido = itemPedido;
-    }
 
 
     // Método para adicionar um item de consumo
-    public void addItemConsumo(ItemPedidoModel itemPedido) {
-        itensPedido.add(itemPedido);
-        itemPedido.setPedido(this);
-    }
-
-    // Método para remover um item de consumo
-    public void removeItemConsumo(ItemPedidoModel itemPedido) {
-        itensPedido.remove(itemPedido);
-        itemPedido.setPedido(null);
-    }
+//    public void addItemConsumo(ItemPedidoModel itemPedido) {
+//        itensPedido.add(itemPedido);
+//        itemPedido.setPedido(this);
+//    }
+//
+//    // Método para remover um item de consumo
+//    public void removeItemConsumo(ItemPedidoModel itemPedido) {
+//        itensPedido.remove(itemPedido);
+//        itemPedido.setPedido(null);
+//    }
 
     @Override
     public boolean equals(Object o) {
