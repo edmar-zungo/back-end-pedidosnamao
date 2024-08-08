@@ -100,7 +100,7 @@ public class PedidoServiceImpl implements PedidoService {
         }
 
         pedidoModel.setSequencia(pedidoModel.getSequencia() == null ? getSequencia() : pedidoModel.getSequencia() );
-        pedidoModel.setNumero(pedidoModel.getNumero() == null ? gerarNumero(pedidoDTO) : pedidoModel.getNumero());
+        pedidoModel.setNumero(pedidoModel.getNumero() == null ? gerarNumero(pedidoDTO.sequencia()) : pedidoModel.getNumero());
         pedidoModel.setEstadoPedido( pedidoModel.getEstadoPedido() == null ? EstadoPedido.PENDENTE : pedidoModel.getEstadoPedido() );
         pedidoModel.setDataCriacao( pedidoModel.getDataCriacao() == null ? LocalDateTime.now() : pedidoModel.getDataCriacao() );
         pedidoModel.setDataActualizacao( pedidoModel.getDataActualizacao() == null ? LocalDateTime.now() : pedidoModel.getDataActualizacao() );
@@ -150,12 +150,9 @@ public class PedidoServiceImpl implements PedidoService {
                 .anyMatch(x -> x.getSequencia().equals(sequencia));
     }
 
-    private String gerarNumero(PedidoDTO pedidoDTO){
-        int ano = pedidoDTO.dataCriacao().getYear();
-        long sequencia = pedidoDTO.sequencia();
-        String numero = "PD/" + sequencia + "/" + ano;
+    private String gerarNumero(long sequencia){
 
-        return numero;
+        return "PD/" + sequencia;
     }
 
     private Boolean existeNumero(String numero){
