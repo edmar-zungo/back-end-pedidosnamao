@@ -24,6 +24,7 @@ public class MesaServiceImpl implements MesaService {
     private final MesaRepository mesaRepository;
     private final MesaMapper mesaMapper;
     final Long ONE = 1L;
+    final Long ZERO = 0L;
 
     public MesaServiceImpl(MesaRepository mesaRepository, MesaMapper mesaMapper) {
         this.mesaRepository = mesaRepository;
@@ -77,27 +78,26 @@ public class MesaServiceImpl implements MesaService {
     }
 
     @Override
-    public Long gerarSequencia() {
-        return mesaRepository
+    public long gerarSequencia() {
+        return (long) mesaRepository
                 .findAll()
-                .stream()
-                .count() + 1;
+                .size() + 1;
     }
 
     @Override
     public MesaDTO init(MesaDTO mesaDTO) {
         MesaModel mesaModel = mesaMapper.mesaDTOToMesaModel(mesaDTO);
-        if (mesaModel.getSequencia() != null && existeSequencia(mesaModel.getSequencia())){
-            throw new GlobalExeception("Sequência existente!");
-        }
-        if (mesaModel.getNumero() != null && existeNumero(mesaModel.getNumero())){
-            throw new GlobalExeception("Já existe uma mesa com esse número " + mesaModel.getNumero());
-        }
 
-        mesaModel.setSequencia(mesaModel.getSequencia() == null ? this.gerarSequencia() : mesaModel.getSequencia() );
-        mesaModel.setNumero(mesaModel.getNumero() == null ? mesaModel.getSequencia() : mesaModel.getNumero() );
+
+        mesaModel.setSequencia(gerarSequencia());
+
+        mesaModel.setNumero(mesaModel.getNumero() == null ? geraNumero(mesaModel.getSequencia().toString()) : geraNumero(mesaModel.getNumero()) );
         mesaModel.setEstadoMesa( mesaModel.getEstadoMesa() == null ? EstadoItem.DISPONIVEL : mesaModel.getEstadoMesa() );
-        mesaModel.setQuantidadeLugares(mesaModel.getQuantidadeLugares() == null ? ONE : mesaModel.getQuantidadeLugares() );
+       if (mesaModel.getQuantidadeLugares() == null || mesaModel.getQuantidadeLugares() == ZERO){
+           mesaModel.setQuantidadeLugares(ONE);
+       }else{
+           mesaModel.setQuantidadeLugares(mesaModel.getQuantidadeLugares());
+       }
         mesaModel.setDescricao( gerarDescricao(mesaModel) );
 
         return mesaMapper.mesaToMesaDTO(mesaModel);
@@ -106,12 +106,13 @@ public class MesaServiceImpl implements MesaService {
 
 
     private String gerarDescricao(MesaModel mesaModel){
-        String descricao = "M" + mesaModel.getNumero() + "-";
+        String descricao = " Mesa nº" + mesaModel.getSequencia() + " - ";
 
-        if (mesaModel.getQuantidadeLugares() > ONE){
-            descricao += mesaModel.getQuantidadeLugares() + "lugares";
+        if (ONE.equals(mesaModel.getQuantidadeLugares())){
+            descricao += mesaModel.getQuantidadeLugares() + " lugar";
+
         } else{
-            descricao += mesaModel.getQuantidadeLugares() + "lugar";
+            descricao += mesaModel.getQuantidadeLugares() + " lugares";
         }
 
         return descricao;
@@ -123,9 +124,17 @@ public class MesaServiceImpl implements MesaService {
                 .anyMatch(x -> x.getSequencia().equals(sequencia));
     }
 
-    private Boolean existeNumero(Long numero){
+    private Boolean existeNumero(String numero){
         return mesaRepository.findAll()
                 .stream()
                 .anyMatch(x -> x.getNumero().equals(numero));
+    }
+
+    private String geraNumero(String numero){
+        numero = "MS/" + numero;
+        if (existeNumero(numero)){
+            throw new GlobalExeception("Já existe uma mesa com esse número: " + numero);
+        }
+        return numero;
     }
 }

@@ -13,7 +13,7 @@ public class MesaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private Long numero;
+    private String numero;
     @NotNull
     private Long sequencia;
     @NotNull
@@ -23,14 +23,11 @@ public class MesaModel {
     private EstadoItem estadoMesa;
     @NotNull
     private String descricao;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pedido_id")
-    private PedidoModel pedido;
 
     public MesaModel() {
     }
 
-    public MesaModel(UUID id, long numero, long sequencia, long quantidadeLugares, EstadoItem estadoMesa, String descricao) {
+    public MesaModel(UUID id, String numero, long sequencia, long quantidadeLugares, EstadoItem estadoMesa, String descricao) {
         this.id = id;
         this.numero = numero;
         this.sequencia = sequencia;
@@ -47,11 +44,11 @@ public class MesaModel {
         this.id = id;
     }
 
-    public Long getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(Long numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
     public Long getSequencia() {
@@ -84,13 +81,6 @@ public class MesaModel {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-    public PedidoModel getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(PedidoModel pedido) {
-        this.pedido = pedido;
     }
 
     @Override

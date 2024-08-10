@@ -15,7 +15,7 @@ public interface MesaService {
     MesaDTO getOne(UUID mesaId);
     void delete(UUID mesaId);
 
-    Long gerarSequencia();
+    long gerarSequencia();
 
     MesaDTO init(MesaDTO mesaDTO);
 
