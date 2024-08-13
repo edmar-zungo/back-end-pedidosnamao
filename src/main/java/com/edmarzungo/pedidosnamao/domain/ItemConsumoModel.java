@@ -3,6 +3,7 @@ package com.edmarzungo.pedidosnamao.domain;
 import com.edmarzungo.pedidosnamao.enumerations.EstadoItem;
 import com.edmarzungo.pedidosnamao.enumerations.TipoBebida;
 import com.edmarzungo.pedidosnamao.enumerations.TipoItemConsumo;
+import com.edmarzungo.pedidosnamao.enumerations.TipoPrato;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -39,6 +40,9 @@ public class ItemConsumoModel {
     @NotNull
     @Enumerated(EnumType.STRING)
     private TipoItemConsumo tipoItemConsumo;
+
+    @Enumerated(EnumType.STRING)
+    private TipoPrato tipoPrato;
 
     @Enumerated(EnumType.STRING)
     private TipoBebida tipoBebida;

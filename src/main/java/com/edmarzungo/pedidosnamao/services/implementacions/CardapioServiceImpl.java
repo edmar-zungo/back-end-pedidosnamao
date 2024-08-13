@@ -40,8 +40,7 @@ public class CardapioServiceImpl implements CardapioService {
                 .orElseThrow(() -> new GlobalExeception("Nenhum Cardapio encontrado!"));
 
         cardapioToUpdate.setDescricao(cardapioDTO.descricao());
-        cardapioToUpdate.setItensConsumo(cardapioDTO.itensConsumo());
-        cardapioToUpdate.setTipoItemConsumo(cardapioDTO.tipoItemConsumo());
+        cardapioToUpdate.setTipoCardapio(cardapioDTO.tipoCardapio());
         cardapioToUpdate = cardapioRepository.save(cardapioToUpdate);
         cardapioDTO = cardapioMapper.cardapioTocardapioDTO(cardapioToUpdate);
 

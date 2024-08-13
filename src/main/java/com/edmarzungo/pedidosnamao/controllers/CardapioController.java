@@ -2,7 +2,6 @@ package com.edmarzungo.pedidosnamao.controllers;
 
 import com.edmarzungo.pedidosnamao.services.CardapioService;
 import com.edmarzungo.pedidosnamao.services.dtos.CardapioDTO;
-import com.edmarzungo.pedidosnamao.services.dtos.MesaDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,13 +26,13 @@ public class CardapioController {
     }
 
     @PostMapping("")
-    public ResponseEntity<CardapioDTO> saveMesa(@Valid @RequestBody CardapioDTO cardapioDTO){
+    public ResponseEntity<CardapioDTO> save(@Valid @RequestBody CardapioDTO cardapioDTO){
         CardapioDTO cardapioSaved = cardapioService.save(cardapioDTO);
         return new ResponseEntity<>(cardapioSaved, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CardapioDTO> getOne(@PathVariable(value = "id") UUID id, @Valid @RequestBody CardapioDTO cardapioDTO){
+    public ResponseEntity<CardapioDTO> update(@PathVariable(value = "id") UUID id, @Valid @RequestBody CardapioDTO cardapioDTO){
         CardapioDTO cardapioUpdated = cardapioService.update(cardapioDTO, id);
         return new ResponseEntity<>(cardapioUpdated, HttpStatus.OK);
     }
@@ -44,8 +43,8 @@ public class CardapioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable(value = "id") UUID id){
+    public ResponseEntity<Void> delete(@PathVariable(value = "id") UUID id){
         cardapioService.delete(id);
-        return new ResponseEntity<>("Eliminado com sucesso!", HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 }

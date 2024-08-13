@@ -10,13 +10,11 @@ import org.mapstruct.factory.Mappers;
 public interface CardapioMapper {
     @Mapping(target = "id", source = "id")
     @Mapping(target = "descricao", source = "descricao")
-    @Mapping(target = "tipoItemConsumo", source = "tipoItemConsumo")
-    @Mapping(target = "itensConsumo", source = "itensConsumo")
+    @Mapping(target = "tipoCardapio", source = "tipoCardapio")
     CardapioDTO cardapioTocardapioDTO(CardapioModel cardapioModel);
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "descricao", source = "descricao")
-    @Mapping(target = "tipoItemConsumo", source = "tipoItemConsumo")
-    @Mapping(target = "itensConsumo", source = "itensConsumo")
+    @Mapping(target = "tipoCardapio", source = "tipoCardapio")
     CardapioModel cardapioDTOToCardapioModel(CardapioDTO cardapioDTO);
 }

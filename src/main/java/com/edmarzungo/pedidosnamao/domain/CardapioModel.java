@@ -1,13 +1,11 @@
 package com.edmarzungo.pedidosnamao.domain;
 
+import com.edmarzungo.pedidosnamao.enumerations.TipoCardapio;
 import com.edmarzungo.pedidosnamao.enumerations.TipoItemConsumo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.sql.results.graph.Fetch;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -20,18 +18,16 @@ public class CardapioModel {
     private String descricao;
     @NotNull
     @Enumerated(EnumType.STRING)
-    private TipoItemConsumo tipoItemConsumo;
+    private TipoCardapio tipoCardapio;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private Set<ItemConsumoModel> itensConsumo = new HashSet<>();
 
     public CardapioModel() {
     }
 
-    public CardapioModel(UUID id, String descricao, TipoItemConsumo tipoItemConsumo) {
+    public CardapioModel(UUID id, String descricao, TipoCardapio tipoCardapio) {
         this.id = id;
         this.descricao = descricao;
-        this.tipoItemConsumo = tipoItemConsumo;
+        this.tipoCardapio = tipoCardapio;
     }
 
     public UUID getId() {
@@ -50,44 +46,26 @@ public class CardapioModel {
         this.descricao = descricao;
     }
 
-    public TipoItemConsumo getTipoItemConsumo() {
-        return tipoItemConsumo;
+    public TipoCardapio getTipoCardapio() {
+        return tipoCardapio;
     }
 
-    public void setTipoItemConsumo(TipoItemConsumo tipoItemConsumo) {
-        this.tipoItemConsumo = tipoItemConsumo;
-    }
-    public Set<ItemConsumoModel> getItensConsumo() {
-        return itensConsumo;
+    public void setTipoCardapio(TipoCardapio tipoCardapio) {
+        this.tipoCardapio = tipoCardapio;
     }
 
-    public void setItensConsumo(Set<ItemConsumoModel> itensConsumo) {
-        this.itensConsumo = itensConsumo;
-    }
-
-    // Método para adicionar um item de consumo
-    public void addItemConsumo(ItemConsumoModel itemConsumo) {
-        itensConsumo.add(itemConsumo);
-        itemConsumo.setCardapio(this);
-    }
-
-    // Método para remover um item de consumo
-    public void removeItemConsumo(ItemConsumoModel itemConsumo) {
-        itensConsumo.remove(itemConsumo);
-        itemConsumo.setCardapio(null);
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CardapioModel cardapioModel = (CardapioModel) o;
-        return Objects.equals(id, cardapioModel.id) && Objects.equals(descricao, cardapioModel.descricao) && tipoItemConsumo == cardapioModel.tipoItemConsumo;
+        return Objects.equals(id, cardapioModel.id) && Objects.equals(descricao, cardapioModel.descricao) && tipoCardapio == cardapioModel.tipoCardapio;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, descricao, tipoItemConsumo);
+        return Objects.hash(id, descricao, tipoCardapio);
     }
 
     @Override
@@ -95,7 +73,7 @@ public class CardapioModel {
         return "CardapioModel{" +
                 "id=" + id +
                 ", descricao='" + descricao + '\'' +
-                ", tipoItemConsumo=" + tipoItemConsumo +
+                ", tipoCardapio=" + tipoCardapio +
                 '}';
     }
 
