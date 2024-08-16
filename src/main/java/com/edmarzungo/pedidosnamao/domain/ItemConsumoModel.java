@@ -22,6 +22,8 @@ public class ItemConsumoModel {
     @Lob
     private byte[] imagem;
 
+    private String imagemContentType;
+
     @NotBlank
     private String descricao;
     @NotNull
@@ -51,16 +53,14 @@ public class ItemConsumoModel {
     @JoinColumn(name = "cardapio_id")
     private CardapioModel cardapio;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_pedido_id")
-    private ItemPedidoModel itemPedido;
 
     public ItemConsumoModel() {
     }
 
-    public ItemConsumoModel(UUID id, byte[] imagem, String descricao, Double preco, EstadoItem estadoItemPedido, ZonedDateTime dataCriacao, String cozinha, String origem, ZonedDateTime dataActualizacao, TipoItemConsumo tipoItemConsumo, TipoBebida tipoBebida, CardapioModel cardapio) {
+    public ItemConsumoModel(UUID id, byte[] imagem, String imagemContentType, String descricao, Double preco, EstadoItem estadoItemPedido, ZonedDateTime dataCriacao, String cozinha, String origem, ZonedDateTime dataActualizacao, TipoItemConsumo tipoItemConsumo, TipoPrato tipoPrato, TipoBebida tipoBebida, CardapioModel cardapio) {
         this.id = id;
         this.imagem = imagem;
+        this.imagemContentType = imagemContentType;
         this.descricao = descricao;
         this.preco = preco;
         this.estadoItemPedido = estadoItemPedido;
@@ -69,6 +69,7 @@ public class ItemConsumoModel {
         this.origem = origem;
         this.dataActualizacao = dataActualizacao;
         this.tipoItemConsumo = tipoItemConsumo;
+        this.tipoPrato = tipoPrato;
         this.tipoBebida = tipoBebida;
         this.cardapio = cardapio;
     }
@@ -79,6 +80,32 @@ public class ItemConsumoModel {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public byte[] getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(byte[] imagem) {
+        this.imagem = imagem;
+    }
+
+    public ItemConsumoModel imagem(byte[] imagem){
+        this.setImagem(imagem);
+        return this;
+    }
+
+    public String getImagemContentType() {
+        return imagemContentType;
+    }
+
+    public void setImagemContentType(String imagemContentType) {
+        this.imagemContentType = imagemContentType;
+    }
+
+    public ItemConsumoModel imagemContentType(String imagemContentType){
+        this.setImagemContentType(imagemContentType);
+        return this;
     }
 
     public String getDescricao() {
@@ -145,6 +172,13 @@ public class ItemConsumoModel {
         this.tipoItemConsumo = tipoItemConsumo;
     }
 
+    public TipoPrato getTipoPrato() {
+        return tipoPrato;
+    }
+
+    public void setTipoPrato(TipoPrato tipoPrato) {
+        this.tipoPrato = tipoPrato;
+    }
     public TipoBebida getTipoBebida() {
         return tipoBebida;
     }
@@ -161,25 +195,18 @@ public void setCardapio(CardapioModel cardapio) {
         this.cardapio = cardapio;
     }
 
-    public ItemPedidoModel getItemPedido() {
-        return itemPedido;
-    }
-
-    public void setItemPedido(ItemPedidoModel itemPedido) {
-        this.itemPedido = itemPedido;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ItemConsumoModel that = (ItemConsumoModel) o;
-        return Objects.equals(id, that.id) && Arrays.equals(imagem, that.imagem) && Objects.equals(descricao, that.descricao) && Objects.equals(preco, that.preco) && estadoItemPedido == that.estadoItemPedido && Objects.equals(dataCriacao, that.dataCriacao) && Objects.equals(cozinha, that.cozinha) && Objects.equals(origem, that.origem) && Objects.equals(dataActualizacao, that.dataActualizacao) && tipoItemConsumo == that.tipoItemConsumo && tipoBebida == that.tipoBebida && Objects.equals(cardapio, that.cardapio);
+        return Objects.equals(id, that.id) && Arrays.equals(imagem, that.imagem) && Objects.equals(imagemContentType, that.imagemContentType) && Objects.equals(descricao, that.descricao) && Objects.equals(preco, that.preco) && estadoItemPedido == that.estadoItemPedido && Objects.equals(dataCriacao, that.dataCriacao) && Objects.equals(cozinha, that.cozinha) && Objects.equals(origem, that.origem) && Objects.equals(dataActualizacao, that.dataActualizacao) && tipoItemConsumo == that.tipoItemConsumo && tipoPrato == that.tipoPrato && tipoBebida == that.tipoBebida && Objects.equals(cardapio, that.cardapio);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, Arrays.hashCode(imagem),descricao, preco, estadoItemPedido, dataCriacao, cozinha, origem, dataActualizacao, tipoItemConsumo, tipoBebida, cardapio);
+        int result = Objects.hash(id, Arrays.hashCode(imagem),imagemContentType,descricao, preco, estadoItemPedido, dataCriacao, cozinha, origem, dataActualizacao, tipoItemConsumo,tipoPrato, tipoBebida, cardapio);
         result = 31 * result;
         return result;
     }
@@ -189,6 +216,7 @@ public void setCardapio(CardapioModel cardapio) {
         return "ItemConsumoModel{" +
                 "id=" + id +
                 "imagem=" + Arrays.toString(imagem) +
+                "imagemContentType=" + imagemContentType +
                 ", descricao='" + descricao + '\'' +
                 ", preco=" + preco +
                 ", estadoItemPedido=" + estadoItemPedido +
@@ -197,18 +225,12 @@ public void setCardapio(CardapioModel cardapio) {
                 ", origem='" + origem + '\'' +
                 ", dataActualizacao=" + dataActualizacao +
                 ", tipoItemConsumo=" + tipoItemConsumo +
+                ", tipoPrato=" + tipoPrato +
                 ", tipoBebida=" + tipoBebida +
                 ", cardapioModel=" + cardapio +
                 '}';
     }
 
-    public byte[] getImagem() {
-        return imagem;
-    }
-
-    public void setImagem(byte[] imagem) {
-        this.imagem = imagem;
-    }
 
 
 }

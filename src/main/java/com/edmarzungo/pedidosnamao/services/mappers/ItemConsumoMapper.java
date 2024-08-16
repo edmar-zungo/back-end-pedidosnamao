@@ -10,6 +10,7 @@ import org.mapstruct.factory.Mappers;
 public interface ItemConsumoMapper {
     @Mapping(target = "id", source = "id")
     @Mapping(target = "imagem", source = "imagem")
+    @Mapping(target = "imagemContentType", source = "imagemContentType")
     @Mapping(target = "descricao", source = "descricao")
     @Mapping(target = "preco", source = "preco")
     @Mapping(target = "estadoItemPedido", source = "estadoItemPedido")
@@ -20,10 +21,10 @@ public interface ItemConsumoMapper {
     @Mapping(target = "tipoItemConsumo", source = "tipoItemConsumo")
     @Mapping(target = "tipoBebida", source = "tipoBebida")
     @Mapping(target = "cardapio", source = "cardapio")
-    @Mapping(target = "itemPedido", source = "itemPedido")
     ItemConsumoDTO itemConsumoModelToItemConsumoDTO(ItemConsumoModel itemConsumoModel);
     @Mapping(target = "id", source = "id")
     @Mapping(target = "imagem", source = "imagem")
+    @Mapping(target = "imagemContentType", source = "imagemContentType")
     @Mapping(target = "descricao", source = "descricao")
     @Mapping(target = "preco", source = "preco")
     @Mapping(target = "estadoItemPedido", source = "estadoItemPedido")
@@ -33,6 +34,5 @@ public interface ItemConsumoMapper {
     @Mapping(target = "dataActualizacao", source = "dataActualizacao")
     @Mapping(target = "tipoItemConsumo", source = "tipoItemConsumo")
     @Mapping(target = "tipoBebida", source = "tipoBebida")
-    @Mapping(target = "itemPedido", source = "itemPedido")
     ItemConsumoModel itemConsumoDTOToItemConsumoModel(ItemConsumoDTO itemConsumoDTO);
 }

@@ -1,6 +1,8 @@
 package com.edmarzungo.pedidosnamao.services.implementacions;
 
 import com.edmarzungo.pedidosnamao.domain.ItemConsumoModel;
+import com.edmarzungo.pedidosnamao.enumerations.EstadoItem;
+import com.edmarzungo.pedidosnamao.enumerations.TipoItemConsumo;
 import com.edmarzungo.pedidosnamao.exceptions.GlobalExeception;
 import com.edmarzungo.pedidosnamao.repositories.ItemConsumoRepository;
 import com.edmarzungo.pedidosnamao.services.ItemConsumoService;
@@ -29,7 +31,9 @@ public class ItemConsumoServiceImpl implements ItemConsumoService {
 
     @Override
     public ItemConsumoDTO save(ItemConsumoDTO itemConsumoDTO) {
+        itemConsumoDTO = init(itemConsumoDTO);
         ItemConsumoModel itemConsumoModel = itemConsumoMapper.itemConsumoDTOToItemConsumoModel(itemConsumoDTO);
+
         itemConsumoModel = itemConsumoRepository.save(itemConsumoModel);
         itemConsumoDTO = itemConsumoMapper.itemConsumoModelToItemConsumoDTO(itemConsumoModel);
         return itemConsumoDTO;
@@ -38,22 +42,23 @@ public class ItemConsumoServiceImpl implements ItemConsumoService {
 
     @Override
     public ItemConsumoDTO update(ItemConsumoDTO itemConsumoDTO, UUID itemConsumoId) {
-        ItemConsumoModel ietmConsumoToUpdate = itemConsumoRepository.findById(itemConsumoId).orElseThrow(() -> new GlobalExeception("Nenhum Item de Consumo encontrado!"));
+        ItemConsumoModel itemConsumoToUpdate = itemConsumoRepository.findById(itemConsumoId).orElseThrow(() -> new GlobalExeception("Nenhum Item de Consumo encontrado!"));
 
-        ietmConsumoToUpdate.setCardapio(itemConsumoDTO.cardapio());
-        ietmConsumoToUpdate.setdataActualizacao(ZonedDateTime.now());
-        ietmConsumoToUpdate.setTipoItemConsumo(itemConsumoDTO.tipoItemConsumo());
-        ietmConsumoToUpdate.setCozinha(itemConsumoDTO.cozinha());
-        ietmConsumoToUpdate.setDescricao(itemConsumoDTO.descricao());
-        ietmConsumoToUpdate.setEstadoItemPedido(itemConsumoDTO.estadoItemPedido());
-        ietmConsumoToUpdate.setItemPedido(itemConsumoDTO.itemPedido());
-        ietmConsumoToUpdate.setImagem(itemConsumoDTO.imagem());
-        ietmConsumoToUpdate.setOrigem(itemConsumoDTO.origem());
-        ietmConsumoToUpdate.setPreco(itemConsumoDTO.preco());
-        ietmConsumoToUpdate.setTipoBebida(itemConsumoDTO.tipoBebida());
+        itemConsumoToUpdate.setdataActualizacao(ZonedDateTime.now());
+        itemConsumoToUpdate.setCardapio(itemConsumoDTO.cardapio());
+        itemConsumoToUpdate.setdataActualizacao(ZonedDateTime.now());
+        itemConsumoToUpdate.setTipoItemConsumo(itemConsumoDTO.tipoItemConsumo());
+        itemConsumoToUpdate.setCozinha(itemConsumoDTO.cozinha());
+        itemConsumoToUpdate.setDescricao(itemConsumoDTO.descricao());
+        itemConsumoToUpdate.setEstadoItemPedido(itemConsumoDTO.estadoItemPedido());
+        itemConsumoToUpdate.setImagem(itemConsumoDTO.imagem());
+        itemConsumoToUpdate.setImagemContentType(itemConsumoDTO.imagemContentType());
+        itemConsumoToUpdate.setOrigem(itemConsumoDTO.origem());
+        itemConsumoToUpdate.setPreco(itemConsumoDTO.preco());
+        itemConsumoToUpdate.setTipoBebida(itemConsumoDTO.tipoBebida());
 
-        ietmConsumoToUpdate = itemConsumoRepository.save(ietmConsumoToUpdate);
-        itemConsumoDTO = itemConsumoMapper.itemConsumoModelToItemConsumoDTO(ietmConsumoToUpdate);
+        itemConsumoToUpdate = itemConsumoRepository.save(itemConsumoToUpdate);
+        itemConsumoDTO = itemConsumoMapper.itemConsumoModelToItemConsumoDTO(itemConsumoToUpdate);
 
         return itemConsumoDTO;
     }
@@ -70,7 +75,7 @@ public class ItemConsumoServiceImpl implements ItemConsumoService {
     public ItemConsumoDTO getOne(UUID itemConsumoId) {
         Optional<ItemConsumoModel> itemConsumoResult = itemConsumoRepository.findById(itemConsumoId);
 
-        if (itemConsumoResult.isEmpty()){
+        if (itemConsumoResult.isEmpty()) {
             throw new GlobalExeception("Nenhum Item de Consumo encontrado!");
 
         }
@@ -82,5 +87,49 @@ public class ItemConsumoServiceImpl implements ItemConsumoService {
     @Override
     public void delete(UUID itemConsumoId) {
         itemConsumoRepository.deleteById(itemConsumoId);
+    }
+
+    private ItemConsumoDTO init(ItemConsumoDTO itemConsumoDTO) {
+        ItemConsumoModel itemConsumoModel = itemConsumoMapper.itemConsumoDTOToItemConsumoModel(itemConsumoDTO);
+
+        if (itemConsumoModel.getPreco() == null) {
+            throw new GlobalExeception("Deve especificar um preço para este item!");
+        }
+
+        if (itemConsumoModel.getTipoItemConsumo() == null) {
+            throw new GlobalExeception("Deve especificar o tipo especifico deste item de consumo! Ex. Comida ou Bebida");
+        }
+
+        if (itemConsumoModel.getTipoItemConsumo().equals(TipoItemConsumo.PRATO)) {
+            if (itemConsumoModel.getTipoPrato() == null) {
+                throw new GlobalExeception("Deve especificar que tipo de prato especifico é. Ex. Principal, Sobre-mesa e Entrada.");
+            }
+            if (itemConsumoModel.getCozinha() == null) {
+                throw new GlobalExeception("Deve especificar a cozinha a qual pertence esse prato! Ex. Cozinha Italiana, Cozinha Angolana, etc.");
+            }
+
+        }
+
+        if (itemConsumoModel.getTipoItemConsumo().equals(TipoItemConsumo.BEBIDA)) {
+            if (itemConsumoModel.getTipoBebida() == null) {
+                throw new GlobalExeception("Deve especificar o tipo de bebida. Ex. Alcoolica ou Não Alcoolica.");
+            }
+            if (itemConsumoModel.getOrigem() == null) {
+                throw new GlobalExeception("Deve especificar a origem dessa bebida. Ex. Alemanhã, Escócia,etc.");
+            }
+
+        }
+
+        if (itemConsumoModel.getCardapio() == null){
+            throw new GlobalExeception("Item não vinculado a nenhum cardápio, por favor adicione o item a um cardápio.");
+        }
+
+        itemConsumoModel.setDataCriacao(ZonedDateTime.now());
+        itemConsumoModel.setdataActualizacao(ZonedDateTime.now());
+        itemConsumoModel.setEstadoItemPedido(itemConsumoModel.getEstadoItemPedido() == null ? EstadoItem.DISPONIVEL : itemConsumoModel.getEstadoItemPedido());
+
+
+        itemConsumoDTO = itemConsumoMapper.itemConsumoModelToItemConsumoDTO(itemConsumoModel);
+        return itemConsumoDTO;
     }
 }
