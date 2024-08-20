@@ -1,9 +1,13 @@
 package com.edmarzungo.pedidosnamao.services.mappers;
 
+import com.edmarzungo.pedidosnamao.domain.CardapioModel;
 import com.edmarzungo.pedidosnamao.domain.ItemConsumoModel;
+import com.edmarzungo.pedidosnamao.services.dtos.CardapioDTO;
 import com.edmarzungo.pedidosnamao.services.dtos.ItemConsumoDTO;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
@@ -34,5 +38,13 @@ public interface ItemConsumoMapper {
     @Mapping(target = "dataActualizacao", source = "dataActualizacao")
     @Mapping(target = "tipoItemConsumo", source = "tipoItemConsumo")
     @Mapping(target = "tipoBebida", source = "tipoBebida")
+    @Mapping(target = "cardapio", source = "cardapio")
     ItemConsumoModel itemConsumoDTOToItemConsumoModel(ItemConsumoDTO itemConsumoDTO);
+
+    @Named("cardapioId")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "descricao", source = "descricao")
+    @Mapping(target = "tipoCardapio", source = "tipoCardapio")
+    CardapioDTO toCardapioId(CardapioModel cardapioModel);
 }

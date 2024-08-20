@@ -12,5 +12,4 @@ import java.util.UUID;
 
 public record ItemConsumoDTO(UUID id, byte[] imagem, String imagemContentType,String descricao, Double preco, EstadoItem estadoItemPedido,
                              ZonedDateTime dataCriacao, String cozinha, String origem, ZonedDateTime dataActualizacao,
-                             TipoItemConsumo tipoItemConsumo,TipoPrato tipoPrato, TipoBebida tipoBebida, CardapioModel cardapio,
-                             ItemPedidoModel itemPedido) {}
+                             TipoItemConsumo tipoItemConsumo,TipoPrato tipoPrato, TipoBebida tipoBebida, CardapioModel cardapio) {}

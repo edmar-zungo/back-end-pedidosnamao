@@ -10,6 +10,7 @@ import com.edmarzungo.pedidosnamao.services.dtos.ItemConsumoDTO;
 import com.edmarzungo.pedidosnamao.services.mappers.ItemConsumoMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -120,7 +121,7 @@ public class ItemConsumoServiceImpl implements ItemConsumoService {
 
         }
 
-        if (itemConsumoModel.getCardapio() == null){
+        if (itemConsumoModel.getCardapio() == null) {
             throw new GlobalExeception("Item não vinculado a nenhum cardápio, por favor adicione o item a um cardápio.");
         }
 

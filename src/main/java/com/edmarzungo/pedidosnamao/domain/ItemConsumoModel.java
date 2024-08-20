@@ -4,6 +4,7 @@ import com.edmarzungo.pedidosnamao.enumerations.EstadoItem;
 import com.edmarzungo.pedidosnamao.enumerations.TipoBebida;
 import com.edmarzungo.pedidosnamao.enumerations.TipoItemConsumo;
 import com.edmarzungo.pedidosnamao.enumerations.TipoPrato;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -49,7 +50,8 @@ public class ItemConsumoModel {
     @Enumerated(EnumType.STRING)
     private TipoBebida tipoBebida;
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cardapio_id")
     private CardapioModel cardapio;
 
