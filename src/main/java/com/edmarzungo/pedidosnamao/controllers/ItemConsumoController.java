@@ -47,4 +47,10 @@ public class ItemConsumoController {
         itemConsumoService.delete(id);
         return new ResponseEntity<>("Eliminado com sucesso!", HttpStatus.OK);
     }
+
+    @GetMapping("/by-cardapio/{cardapioId}")
+    public ResponseEntity<List<ItemConsumoDTO>> getItensConsumoByCardapio(@PathVariable(value = "cardapioId") UUID cardapioId){
+        List<ItemConsumoDTO> itensConsumoResult = itemConsumoService.getItensConsumoByCardapio(cardapioId);
+        return new ResponseEntity<>(itensConsumoResult, HttpStatus.OK);
+    }
 }

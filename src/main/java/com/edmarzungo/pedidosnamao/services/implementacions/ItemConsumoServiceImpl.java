@@ -73,6 +73,15 @@ public class ItemConsumoServiceImpl implements ItemConsumoService {
     }
 
     @Override
+    public List<ItemConsumoDTO> getItensConsumoByCardapio(UUID cardapioId) {
+        return itemConsumoRepository.findAll()
+                .stream()
+                .filter(x -> x.getCardapio().getId().equals(cardapioId))
+                .map(itemConsumoMapper::itemConsumoModelToItemConsumoDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public ItemConsumoDTO getOne(UUID itemConsumoId) {
         Optional<ItemConsumoModel> itemConsumoResult = itemConsumoRepository.findById(itemConsumoId);
 

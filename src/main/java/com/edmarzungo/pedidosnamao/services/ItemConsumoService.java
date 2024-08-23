@@ -11,6 +11,7 @@ public interface ItemConsumoService {
     ItemConsumoDTO update(ItemConsumoDTO itemConsumoDTO, UUID itemConsumoId);
 
     List<ItemConsumoDTO> getAll();
+    List<ItemConsumoDTO> getItensConsumoByCardapio(UUID cardapioId);
     ItemConsumoDTO getOne(UUID itemConsumoId);
     void delete(UUID itemConsumoId);
 }
