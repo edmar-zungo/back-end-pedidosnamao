@@ -2,6 +2,7 @@ package com.edmarzungo.pedidosnamao.services.implementacions;
 
 import com.edmarzungo.pedidosnamao.domain.ItemConsumoModel;
 import com.edmarzungo.pedidosnamao.enumerations.EstadoItem;
+import com.edmarzungo.pedidosnamao.enumerations.TipoCardapio;
 import com.edmarzungo.pedidosnamao.enumerations.TipoItemConsumo;
 import com.edmarzungo.pedidosnamao.exceptions.GlobalExeception;
 import com.edmarzungo.pedidosnamao.repositories.ItemConsumoRepository;
@@ -102,38 +103,39 @@ public class ItemConsumoServiceImpl implements ItemConsumoService {
     private ItemConsumoDTO init(ItemConsumoDTO itemConsumoDTO) {
         ItemConsumoModel itemConsumoModel = itemConsumoMapper.itemConsumoDTOToItemConsumoModel(itemConsumoDTO);
 
-        if (itemConsumoModel.getPreco() == null) {
-            throw new GlobalExeception("Deve especificar um preço para este item!");
-        }
-
-        if (itemConsumoModel.getTipoItemConsumo() == null) {
-            throw new GlobalExeception("Deve especificar o tipo especifico deste item de consumo! Ex. Comida ou Bebida");
-        }
-
-        if (itemConsumoModel.getTipoItemConsumo().equals(TipoItemConsumo.PRATO)) {
-            if (itemConsumoModel.getTipoPrato() == null) {
-                throw new GlobalExeception("Deve especificar que tipo de prato especifico é. Ex. Principal, Sobre-mesa e Entrada.");
-            }
-            if (itemConsumoModel.getCozinha() == null) {
-                throw new GlobalExeception("Deve especificar a cozinha a qual pertence esse prato! Ex. Cozinha Italiana, Cozinha Angolana, etc.");
-            }
-
-        }
-
-        if (itemConsumoModel.getTipoItemConsumo().equals(TipoItemConsumo.BEBIDA)) {
-            if (itemConsumoModel.getTipoBebida() == null) {
-                throw new GlobalExeception("Deve especificar o tipo de bebida. Ex. Alcoolica ou Não Alcoolica.");
-            }
-            if (itemConsumoModel.getOrigem() == null) {
-                throw new GlobalExeception("Deve especificar a origem dessa bebida. Ex. Alemanhã, Escócia,etc.");
-            }
-
-        }
-
         if (itemConsumoModel.getCardapio() == null) {
             throw new GlobalExeception("Item não vinculado a nenhum cardápio, por favor adicione o item a um cardápio.");
         }
 
+        if (itemConsumoModel.getTipoItemConsumo() == null) {
+            throw new GlobalExeception("Deve especificar o tipo especifico deste item! Ex. Prato ou Bebida");
+        }
+
+        if (itemConsumoModel.getPreco() == null) {
+            throw new GlobalExeception("Deve especificar um preço para este item! Ex. 500 kz");
+        }
+
+        if (itemConsumoModel.getCardapio().getTipoCardapio().equals(TipoCardapio.PRATOS) && itemConsumoModel.getTipoItemConsumo().equals(TipoItemConsumo.BEBIDA)) {
+            throw new GlobalExeception("Não pode adicionar uma Bebida em um cardápio de Pratos. Verifique o tipo do item a ser adicionado!");
+
+        }
+
+        if (itemConsumoModel.getCardapio().getTipoCardapio().equals(TipoCardapio.BEBIDAS) && itemConsumoModel.getTipoItemConsumo().equals(TipoItemConsumo.PRATO)) {
+            throw new GlobalExeception("Não pode adicionar um Prato em um cardápio de Bebidas. Verifique o tipo do item a ser adicionado!");
+
+        }
+
+        if (itemConsumoModel.getTipoItemConsumo().equals(TipoItemConsumo.PRATO) && itemConsumoModel.getTipoPrato() == null) {
+            throw new GlobalExeception("Deve especificar que tipo de prato. Ex. Principal, Sobre-mesa e Entrada.");
+        }
+
+        if (itemConsumoModel.getTipoItemConsumo().equals(TipoItemConsumo.BEBIDA) && itemConsumoModel.getTipoBebida() == null) {
+            throw new GlobalExeception("Deve especificar o tipo de bebida. Ex. Álcoolica ou Não Álcoolica.");
+        }
+
+
+        itemConsumoModel.setOrigem(itemConsumoModel.getOrigem() == null ? "" : itemConsumoModel.getOrigem());
+        itemConsumoModel.setCozinha(itemConsumoModel.getCozinha() == null ? "" : itemConsumoModel.getCozinha());
         itemConsumoModel.setDataCriacao(ZonedDateTime.now());
         itemConsumoModel.setdataActualizacao(ZonedDateTime.now());
         itemConsumoModel.setEstadoItemPedido(itemConsumoModel.getEstadoItemPedido() == null ? EstadoItem.DISPONIVEL : itemConsumoModel.getEstadoItemPedido());
