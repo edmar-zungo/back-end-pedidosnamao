@@ -11,7 +11,6 @@ import com.edmarzungo.pedidosnamao.services.dtos.ItemConsumoDTO;
 import com.edmarzungo.pedidosnamao.services.mappers.ItemConsumoMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -52,7 +51,7 @@ public class ItemConsumoServiceImpl implements ItemConsumoService {
         itemConsumoToUpdate.setTipoItemConsumo(itemConsumoDTO.tipoItemConsumo());
         itemConsumoToUpdate.setCozinha(itemConsumoDTO.cozinha());
         itemConsumoToUpdate.setDescricao(itemConsumoDTO.descricao());
-        itemConsumoToUpdate.setEstadoItemPedido(itemConsumoDTO.estadoItemPedido());
+        itemConsumoToUpdate.setEstadoItemConsumo(itemConsumoDTO.estadoItemConsumo());
         itemConsumoToUpdate.setImagem(itemConsumoDTO.imagem());
         itemConsumoToUpdate.setImagemContentType(itemConsumoDTO.imagemContentType());
         itemConsumoToUpdate.setOrigem(itemConsumoDTO.origem());
@@ -117,12 +116,10 @@ public class ItemConsumoServiceImpl implements ItemConsumoService {
 
         if (itemConsumoModel.getCardapio().getTipoCardapio().equals(TipoCardapio.PRATOS) && itemConsumoModel.getTipoItemConsumo().equals(TipoItemConsumo.BEBIDA)) {
             throw new GlobalExeception("Não pode adicionar uma Bebida em um cardápio de Pratos. Verifique o tipo do item a ser adicionado!");
-
         }
 
         if (itemConsumoModel.getCardapio().getTipoCardapio().equals(TipoCardapio.BEBIDAS) && itemConsumoModel.getTipoItemConsumo().equals(TipoItemConsumo.PRATO)) {
             throw new GlobalExeception("Não pode adicionar um Prato em um cardápio de Bebidas. Verifique o tipo do item a ser adicionado!");
-
         }
 
         if (itemConsumoModel.getTipoItemConsumo().equals(TipoItemConsumo.PRATO) && itemConsumoModel.getTipoPrato() == null) {
@@ -138,7 +135,7 @@ public class ItemConsumoServiceImpl implements ItemConsumoService {
         itemConsumoModel.setCozinha(itemConsumoModel.getCozinha() == null ? "" : itemConsumoModel.getCozinha());
         itemConsumoModel.setDataCriacao(ZonedDateTime.now());
         itemConsumoModel.setdataActualizacao(ZonedDateTime.now());
-        itemConsumoModel.setEstadoItemPedido(itemConsumoModel.getEstadoItemPedido() == null ? EstadoItem.DISPONIVEL : itemConsumoModel.getEstadoItemPedido());
+        itemConsumoModel.setEstadoItemConsumo(itemConsumoModel.getEstadoItemConsumo() == null ? EstadoItem.DISPONIVEL : itemConsumoModel.getEstadoItemConsumo());
 
 
         itemConsumoDTO = itemConsumoMapper.itemConsumoModelToItemConsumoDTO(itemConsumoModel);

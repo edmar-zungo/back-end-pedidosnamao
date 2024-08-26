@@ -31,7 +31,7 @@ public class ItemConsumoModel {
     private Double preco;
     @NotNull
     @Enumerated(EnumType.STRING)
-    private EstadoItem estadoItemPedido;
+    private EstadoItem estadoItemConsumo;
     @NotNull
     private ZonedDateTime dataCriacao;
 
@@ -59,13 +59,13 @@ public class ItemConsumoModel {
     public ItemConsumoModel() {
     }
 
-    public ItemConsumoModel(UUID id, byte[] imagem, String imagemContentType, String descricao, Double preco, EstadoItem estadoItemPedido, ZonedDateTime dataCriacao, String cozinha, String origem, ZonedDateTime dataActualizacao, TipoItemConsumo tipoItemConsumo, TipoPrato tipoPrato, TipoBebida tipoBebida, CardapioModel cardapio) {
+    public ItemConsumoModel(UUID id, byte[] imagem, String imagemContentType, String descricao, Double preco, EstadoItem estadoItemConsumo, ZonedDateTime dataCriacao, String cozinha, String origem, ZonedDateTime dataActualizacao, TipoItemConsumo tipoItemConsumo, TipoPrato tipoPrato, TipoBebida tipoBebida, CardapioModel cardapio) {
         this.id = id;
         this.imagem = imagem;
         this.imagemContentType = imagemContentType;
         this.descricao = descricao;
         this.preco = preco;
-        this.estadoItemPedido = estadoItemPedido;
+        this.estadoItemConsumo = estadoItemConsumo;
         this.dataCriacao = dataCriacao;
         this.cozinha = cozinha;
         this.origem = origem;
@@ -126,12 +126,12 @@ public class ItemConsumoModel {
         this.preco = preco;
     }
 
-    public EstadoItem getEstadoItemPedido() {
-        return estadoItemPedido;
+    public EstadoItem getEstadoItemConsumo() {
+        return estadoItemConsumo;
     }
 
-    public void setEstadoItemPedido(EstadoItem estadoItemPedido) {
-        this.estadoItemPedido = estadoItemPedido;
+    public void setEstadoItemConsumo(EstadoItem estadoItemConsumo) {
+        this.estadoItemConsumo = estadoItemConsumo;
     }
 
     public ZonedDateTime getDataCriacao() {
@@ -203,12 +203,12 @@ public void setCardapio(CardapioModel cardapio) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ItemConsumoModel that = (ItemConsumoModel) o;
-        return Objects.equals(id, that.id) && Arrays.equals(imagem, that.imagem) && Objects.equals(imagemContentType, that.imagemContentType) && Objects.equals(descricao, that.descricao) && Objects.equals(preco, that.preco) && estadoItemPedido == that.estadoItemPedido && Objects.equals(dataCriacao, that.dataCriacao) && Objects.equals(cozinha, that.cozinha) && Objects.equals(origem, that.origem) && Objects.equals(dataActualizacao, that.dataActualizacao) && tipoItemConsumo == that.tipoItemConsumo && tipoPrato == that.tipoPrato && tipoBebida == that.tipoBebida && Objects.equals(cardapio, that.cardapio);
+        return Objects.equals(id, that.id) && Arrays.equals(imagem, that.imagem) && Objects.equals(imagemContentType, that.imagemContentType) && Objects.equals(descricao, that.descricao) && Objects.equals(preco, that.preco) && estadoItemConsumo == that.estadoItemConsumo && Objects.equals(dataCriacao, that.dataCriacao) && Objects.equals(cozinha, that.cozinha) && Objects.equals(origem, that.origem) && Objects.equals(dataActualizacao, that.dataActualizacao) && tipoItemConsumo == that.tipoItemConsumo && tipoPrato == that.tipoPrato && tipoBebida == that.tipoBebida && Objects.equals(cardapio, that.cardapio);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, Arrays.hashCode(imagem),imagemContentType,descricao, preco, estadoItemPedido, dataCriacao, cozinha, origem, dataActualizacao, tipoItemConsumo,tipoPrato, tipoBebida, cardapio);
+        int result = Objects.hash(id, Arrays.hashCode(imagem),imagemContentType,descricao, preco, estadoItemConsumo, dataCriacao, cozinha, origem, dataActualizacao, tipoItemConsumo,tipoPrato, tipoBebida, cardapio);
         result = 31 * result;
         return result;
     }
@@ -221,7 +221,7 @@ public void setCardapio(CardapioModel cardapio) {
                 "imagemContentType=" + imagemContentType +
                 ", descricao='" + descricao + '\'' +
                 ", preco=" + preco +
-                ", estadoItemPedido=" + estadoItemPedido +
+                ", estadoItemConsumo=" + estadoItemConsumo +
                 ", dataCriacao=" + dataCriacao +
                 ", cozinha='" + cozinha + '\'' +
                 ", origem='" + origem + '\'' +
