@@ -8,6 +8,8 @@ import com.edmarzungo.pedidosnamao.repositories.PedidoRepository;
 import com.edmarzungo.pedidosnamao.services.PedidoService;
 import com.edmarzungo.pedidosnamao.services.dtos.PedidoDTO;
 import com.edmarzungo.pedidosnamao.services.mappers.PedidoMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -15,7 +17,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
+@Service
+@Transactional
 public class PedidoServiceImpl implements PedidoService {
 
     private final PedidoRepository pedidoRepository;
@@ -92,15 +95,15 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public PedidoDTO init(PedidoDTO pedidoDTO) {
         PedidoModel pedidoModel = pedidoMapper.pedidoDTOToPedidoModel(pedidoDTO);
+
+        pedidoModel.setSequencia(pedidoModel.getSequencia() == null ? getSequencia() : pedidoModel.getSequencia() );
         if (pedidoModel.getSequencia() != null && existeSequencia(pedidoModel.getSequencia())){
             throw new GlobalExeception("Sequência existente!");
         }
-        if (pedidoModel.getNumero() != null && existeNumero(pedidoModel.getNumero())){
-            throw new GlobalExeception("Já existe um Pedido com existente número - " + pedidoModel.getNumero() + "!");
-        }
-
-        pedidoModel.setSequencia(pedidoModel.getSequencia() == null ? getSequencia() : pedidoModel.getSequencia() );
         pedidoModel.setNumero(pedidoModel.getNumero() == null ? gerarNumero(pedidoDTO.sequencia()) : pedidoModel.getNumero());
+        if (pedidoModel.getNumero() != null && existeNumero(pedidoModel.getNumero())){
+            throw new GlobalExeception("Já existe um Pedido com este número - " + pedidoModel.getNumero() + "!");
+        }
         pedidoModel.setEstadoPedido( pedidoModel.getEstadoPedido() == null ? EstadoPedido.PENDENTE : pedidoModel.getEstadoPedido() );
         pedidoModel.setDataCriacao( pedidoModel.getDataCriacao() == null ? LocalDateTime.now() : pedidoModel.getDataCriacao() );
         pedidoModel.setDataActualizacao( pedidoModel.getDataActualizacao() == null ? LocalDateTime.now() : pedidoModel.getDataActualizacao() );

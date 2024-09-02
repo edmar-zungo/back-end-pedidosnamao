@@ -30,6 +30,7 @@ public class PedidoModel {
     @NotNull
     @Enumerated(EnumType.STRING)
     private EstadoPedido estadoPedido;
+
     private String descricao;
     private Boolean isDeliver;
     private String enderecoEntregaDetalhado;
