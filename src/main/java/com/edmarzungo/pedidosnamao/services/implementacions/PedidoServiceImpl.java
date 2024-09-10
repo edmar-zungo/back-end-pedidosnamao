@@ -33,6 +33,7 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public PedidoDTO save(PedidoDTO pedidoDTO) {
+        pedidoDTO = init(pedidoDTO);
         PedidoModel pedidoModel = pedidoMapper.pedidoDTOToPedidoModel(pedidoDTO);
         pedidoModel = pedidoRepository.save(pedidoModel);
         pedidoDTO = pedidoMapper.pedidoToPedidoDTO(pedidoModel);
@@ -50,7 +51,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedidoToUpdate.setNumero(pedidoDTO.numero());
         pedidoToUpdate.setDataActualizacao(LocalDateTime.now());
         pedidoToUpdate.setDataCriacao(pedidoDTO.dataCriacao());
-        pedidoToUpdate.setDeliver(pedidoDTO.isDeliver());
+        pedidoToUpdate.setDeliver(pedidoDTO.deliver());
         pedidoToUpdate.setDescricaoEntrega(pedidoDTO.descricaoEntrega());
         pedidoToUpdate.setEnderecoEntregaDetalhado(pedidoDTO.enderecoEntregaDetalhado());
         pedidoToUpdate.setMesa(pedidoDTO.mesa());
@@ -96,11 +97,11 @@ public class PedidoServiceImpl implements PedidoService {
     public PedidoDTO init(PedidoDTO pedidoDTO) {
         PedidoModel pedidoModel = pedidoMapper.pedidoDTOToPedidoModel(pedidoDTO);
 
-        pedidoModel.setSequencia(pedidoModel.getSequencia() == null ? getSequencia() : pedidoModel.getSequencia() );
+        pedidoModel.setSequencia(pedidoModel.getSequencia() == null ? gerarSequencia() : pedidoModel.getSequencia() );
         if (pedidoModel.getSequencia() != null && existeSequencia(pedidoModel.getSequencia())){
             throw new GlobalExeception("Sequência existente!");
         }
-        pedidoModel.setNumero(pedidoModel.getNumero() == null ? gerarNumero(pedidoDTO.sequencia()) : pedidoModel.getNumero());
+        pedidoModel.setNumero(pedidoModel.getNumero() == null ? gerarNumero(pedidoModel.getSequencia()) : pedidoModel.getNumero());
         if (pedidoModel.getNumero() != null && existeNumero(pedidoModel.getNumero())){
             throw new GlobalExeception("Já existe um Pedido com este número - " + pedidoModel.getNumero() + "!");
         }
@@ -109,7 +110,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedidoModel.setDataActualizacao( pedidoModel.getDataActualizacao() == null ? LocalDateTime.now() : pedidoModel.getDataActualizacao() );
         pedidoModel.setDeliver( pedidoModel.isDeliver() == null ? false : pedidoModel.isDeliver() );
 
-        if (pedidoModel.isDeliver().equals(false) && pedidoModel.getMesa() == null){
+        if ((!pedidoModel.isDeliver()) && pedidoModel.getMesa() == null){
             throw new GlobalExeception("Adicione uma mesa!");
         }
 
@@ -124,23 +125,25 @@ public class PedidoServiceImpl implements PedidoService {
                 throw new GlobalExeception("Adicione o endereço de entrega, de forma detalhada.");
             }
 
-            pedidoModel.setDescricaoEntrega( geraDesdcricaoPedido(pedidoDTO) );
             pedidoModel.setTempoEntrega(LocalTime.of(1, 20));
+            pedidoModel.setDescricaoEntrega( geraDesdcricaoPedido(pedidoModel) );
 
-            pedidoModel.setValorEntrega(pedidoDTO.valorEntrega() == null ?  ZERO : pedidoDTO.valorEntrega());
-            pedidoModel.setTotalPagar( totalPagar(pedidoDTO.totalPagar(), pedidoDTO.valorEntrega()) );
+
+            pedidoModel.setValorEntrega(pedidoModel.getValorEntrega() == null ?  ZERO : pedidoModel.getValorEntrega());
+            pedidoModel.setTotalPagar( totalPagar(pedidoModel.getTotalPagar(), pedidoModel.getValorEntrega()) );
         }
 
-
-
-        pedidoModel.setTotalPago(pedidoDTO.totalPago() == null ? ZERO : pedidoModel.getTotalPago() );
+        pedidoModel.setTotalPago(pedidoModel.getTotalPago() == null ? ZERO : pedidoModel.getTotalPago() );
         pedidoModel.setTotalTroco(pedidoModel.getTotalTroco() == null ? ZERO : pedidoModel.getTotalTroco() );
 
+        pedidoModel.setDescricao(geraDesdcricaoPedido(pedidoModel));
+
+        pedidoDTO = pedidoMapper.pedidoToPedidoDTO(pedidoModel);
 
         return pedidoDTO;
     }
 
-    private Long getSequencia(){
+    private Long gerarSequencia(){
         return pedidoRepository
                 .findAll()
                 .stream()
@@ -164,10 +167,16 @@ public class PedidoServiceImpl implements PedidoService {
                 .anyMatch(x -> x.getNumero().equals(numero));
     }
 
-    private String geraDesdcricaoPedido(PedidoDTO pedidoDTO){
-        String descricao = null;
+    private String geraDesdcricaoPedido(PedidoModel pedidoModel){
+        String descricao = "Pedido número: ";
 
-        descricao = "Pedido número: " + pedidoDTO.numero() + ", para o endereço: " + pedidoDTO.enderecoEntregaDetalhado() + ", na data e hora: " + pedidoDTO.dataActualizacao() + ", no valor de: " + pedidoDTO.totalPagar().toString();
+        if (pedidoModel.isDeliver()){
+            descricao = descricao + pedidoModel.getNumero() + ", para o endereço: " + pedidoModel.getEnderecoEntregaDetalhado() + ", na data e hora: " + pedidoModel.getDataActualizacao() + ", tempo de entrega: " + pedidoModel.getTempoEntrega().getHour() +"H:" + pedidoModel.getTempoEntrega().getMinute() + "min" + ", no valor de: " + pedidoModel.getTotalPagar().toString();
+
+            return descricao;
+        }
+
+        descricao = descricao + pedidoModel.getNumero() + " para a " + pedidoModel.getMesa().getDescricao();
 
         return descricao;
     }

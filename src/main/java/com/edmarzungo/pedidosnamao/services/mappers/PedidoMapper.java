@@ -1,10 +1,13 @@
 package com.edmarzungo.pedidosnamao.services.mappers;
 
+import com.edmarzungo.pedidosnamao.domain.MesaModel;
 import com.edmarzungo.pedidosnamao.domain.PedidoModel;
+import com.edmarzungo.pedidosnamao.services.dtos.MesaDTO;
 import com.edmarzungo.pedidosnamao.services.dtos.PedidoDTO;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
 public interface PedidoMapper {
@@ -16,6 +19,7 @@ public interface PedidoMapper {
     @Mapping(target = "mesa", source = "mesa")
     @Mapping(target = "estadoPedido", source = "estadoPedido")
     @Mapping(target = "descricao", source = "descricao")
+    @Mapping(target = "deliver", source = "deliver")
     @Mapping(target = "enderecoEntregaDetalhado", source = "enderecoEntregaDetalhado")
     @Mapping(target = "tempoEntrega", source = "tempoEntrega")
     @Mapping(target = "descricaoEntrega", source = "descricaoEntrega")
@@ -33,6 +37,7 @@ public interface PedidoMapper {
     @Mapping(target = "mesa", source = "mesa")
     @Mapping(target = "estadoPedido", source = "estadoPedido")
     @Mapping(target = "descricao", source = "descricao")
+    @Mapping(target = "deliver", source = "deliver")
     @Mapping(target = "enderecoEntregaDetalhado", source = "enderecoEntregaDetalhado")
     @Mapping(target = "tempoEntrega", source = "tempoEntrega")
     @Mapping(target = "descricaoEntrega", source = "descricaoEntrega")
@@ -41,4 +46,5 @@ public interface PedidoMapper {
     @Mapping(target = "totalPago", source = "totalPago")
     @Mapping(target = "totalTroco", source = "totalTroco")
     PedidoModel pedidoDTOToPedidoModel(PedidoDTO pedidoDTO);
+
 }

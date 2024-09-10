@@ -1,6 +1,7 @@
 package com.edmarzungo.pedidosnamao.domain;
 
 import com.edmarzungo.pedidosnamao.enumerations.EstadoPedido;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -24,7 +25,9 @@ public class PedidoModel {
     private String numero;
     @NotNull
     private LocalDateTime dataActualizacao;
-    @OneToOne(fetch = FetchType.LAZY)
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mesa_id")
     private MesaModel mesa;
     @NotNull
@@ -132,7 +135,7 @@ public class PedidoModel {
     }
 
     public void setDeliver(Boolean isDeliver) {
-        isDeliver = isDeliver;
+        this.isDeliver = isDeliver;
     }
 
     public String getEnderecoEntregaDetalhado() {
