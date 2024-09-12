@@ -168,15 +168,15 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     private String geraDesdcricaoPedido(PedidoModel pedidoModel){
-        String descricao = "Pedido número: ";
+        String descricao = "";
 
         if (pedidoModel.isDeliver()){
-            descricao = descricao + pedidoModel.getNumero() + ", para o endereço: " + pedidoModel.getEnderecoEntregaDetalhado() + ", na data e hora: " + pedidoModel.getDataActualizacao() + ", tempo de entrega: " + pedidoModel.getTempoEntrega().getHour() +"H:" + pedidoModel.getTempoEntrega().getMinute() + "min" + ", no valor de: " + pedidoModel.getTotalPagar().toString();
+            descricao = "Pedido de entrega número: " + pedidoModel.getNumero() + ", para o endereço: " + pedidoModel.getEnderecoEntregaDetalhado() + ", na data e hora: " + pedidoModel.getDataActualizacao() + ", tempo de entrega: " + pedidoModel.getTempoEntrega().getHour() +":" + pedidoModel.getTempoEntrega().getMinute() + "min" + ", no valor de: " + pedidoModel.getTotalPagar();
 
             return descricao;
         }
 
-        descricao = descricao + pedidoModel.getNumero() + " para a " + pedidoModel.getMesa().getDescricao();
+        descricao = "Pedido número: " + pedidoModel.getNumero() + " para a " + pedidoModel.getMesa().getDescricao();
 
         return descricao;
     }
