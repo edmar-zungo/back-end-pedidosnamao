@@ -64,8 +64,11 @@ public class MesaServiceImpl implements MesaService {
             mesaToUpdate.setSequencia(mesa.sequencia());
             mesaToUpdate.setEstadoMesa(mesa.estadoMesa());
 
+            mesaToUpdate = mesaRepository.save(mesaToUpdate);
 
-       return mesaMapper.mesaToMesaDTO( mesaRepository.save(mesaToUpdate) );
+            mesa = mesaMapper.mesaToMesaDTO( mesaToUpdate );
+
+       return mesa;
 
     }
 

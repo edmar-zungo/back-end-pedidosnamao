@@ -57,7 +57,7 @@ public class ItemPedidoModel {
         this.itemConsumo = itemConsumo;
     }
 
-    public long getQuantidadeItemConsumo() {
+    public Long getQuantidadeItemConsumo() {
         return quantidadeItemConsumo;
     }
 
