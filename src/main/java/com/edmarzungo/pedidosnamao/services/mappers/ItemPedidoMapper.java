@@ -14,6 +14,7 @@ public interface ItemPedidoMapper {
     @Mapping(target = "precoItemPedido", source = "precoItemPedido")
     @Mapping(target = "desconto", source = "desconto")
     @Mapping(target = "descricao", source = "descricao")
+    @Mapping(target = "pedido", source = "pedido")
     ItemPedidoModel itemPedidoDTOToItemPedidoModel(ItemPedidoDTO pedidoDTO);
     @Mapping(target = "id", source = "id")
     @Mapping(target = "itemConsumo", source = "itemConsumo")
@@ -21,5 +22,6 @@ public interface ItemPedidoMapper {
     @Mapping(target = "precoItemPedido", source = "precoItemPedido")
     @Mapping(target = "desconto", source = "desconto")
     @Mapping(target = "descricao", source = "descricao")
+    @Mapping(target = "pedido", source = "pedido")
     ItemPedidoDTO itemPedidoModelToItemPedidoDTO(ItemPedidoModel pedidoModel);
 }

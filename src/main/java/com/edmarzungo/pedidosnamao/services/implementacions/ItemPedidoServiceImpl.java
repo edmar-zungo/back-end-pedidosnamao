@@ -8,12 +8,14 @@ import com.edmarzungo.pedidosnamao.services.ItemPedidoService;
 import com.edmarzungo.pedidosnamao.services.dtos.ItemPedidoDTO;
 import com.edmarzungo.pedidosnamao.services.dtos.MesaDTO;
 import com.edmarzungo.pedidosnamao.services.mappers.ItemPedidoMapper;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Service
 public class ItemPedidoServiceImpl implements ItemPedidoService {
 
     private final ItemPedidoMapper itemPedidoMapper;
@@ -83,6 +85,10 @@ public class ItemPedidoServiceImpl implements ItemPedidoService {
     public ItemPedidoDTO init(ItemPedidoDTO itemPedidoDTO) {
         ItemPedidoModel itemPedidoModel = itemPedidoMapper.itemPedidoDTOToItemPedidoModel(itemPedidoDTO);
 
+        if (itemPedidoModel.getPedido().getId() == null){
+            throw new GlobalExeception("Adicione um pedido ao item de consumo!");
+        }
+
         if (itemPedidoModel.getItemConsumo() == null){
             throw new GlobalExeception("Adicione um item de consumo!");
         }
@@ -94,6 +100,10 @@ public class ItemPedidoServiceImpl implements ItemPedidoService {
         itemPedidoModel.setQuantidadeItemConsumo(itemPedidoModel.getQuantidadeItemConsumo() == null ? 1L : itemPedidoModel.getQuantidadeItemConsumo() );
 
         itemPedidoModel.setDesconto(itemPedidoModel.getDesconto() == null ? 0D : itemPedidoModel.getDesconto());
+
+        if (itemPedidoModel.getDesconto() > 0){
+            itemPedidoModel.setPrecoItemPedido(itemPedidoModel.getPrecoItemPedido() - itemPedidoModel.getDesconto() );
+        }
 
         itemPedidoDTO = itemPedidoMapper.itemPedidoModelToItemPedidoDTO(itemPedidoModel);
 

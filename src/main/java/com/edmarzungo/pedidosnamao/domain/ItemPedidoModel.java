@@ -1,5 +1,6 @@
 package com.edmarzungo.pedidosnamao.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -13,7 +14,8 @@ public class ItemPedidoModel {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @NotNull
-    @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_consumo_id")
     private ItemConsumoModel itemConsumo;
     @NotNull
@@ -24,7 +26,8 @@ public class ItemPedidoModel {
     private String descricao;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "pedido_id")
     private PedidoModel pedido;
 
