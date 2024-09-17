@@ -143,6 +143,18 @@ public class PedidoServiceImpl implements PedidoService {
         return pedidoDTO;
     }
 
+    @Override
+    public PedidoDTO mudarEstadoPedido(PedidoDTO pedidoDTO) {
+        pedidoDTO = getOne(pedidoDTO.id());
+        PedidoModel pedidoModel = pedidoMapper.pedidoDTOToPedidoModel(pedidoDTO);
+        pedidoModel.setEstadoPedido(EstadoPedido.CONCLUIDO);
+
+        pedidoModel = pedidoRepository.save(pedidoModel);
+
+        pedidoDTO = pedidoMapper.pedidoToPedidoDTO(pedidoModel);
+        return pedidoDTO;
+    }
+
     private Long gerarSequencia(){
         return pedidoRepository
                 .findAll()

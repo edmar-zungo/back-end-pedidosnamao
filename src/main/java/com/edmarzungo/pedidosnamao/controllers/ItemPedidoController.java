@@ -44,8 +44,8 @@ public class ItemPedidoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable(value = "id") UUID id){
+    public ResponseEntity<Void> delete(@PathVariable(value = "id") UUID id){
         itemPedidoService.delete(id);
-        return new ResponseEntity<>("Eliminado com sucesso!", HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,6 +1,7 @@
 package com.edmarzungo.pedidosnamao.controllers;
 
 
+import com.edmarzungo.pedidosnamao.enumerations.EstadoPedido;
 import com.edmarzungo.pedidosnamao.services.PedidoService;
 import com.edmarzungo.pedidosnamao.services.dtos.PedidoDTO;
 import jakarta.validation.Valid;
@@ -32,6 +33,12 @@ public class PedidoController {
     public ResponseEntity<PedidoDTO> save(@Valid @RequestBody PedidoDTO pedidoDTO){
         PedidoDTO pedidoSaved = pedidoService.save(pedidoDTO);
         return new ResponseEntity<>(pedidoSaved, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/mudar-estado")
+    public ResponseEntity<PedidoDTO> mudarEstadoPedido(@Valid @RequestBody PedidoDTO pedidoDTO){
+        PedidoDTO pedidoUpdated = pedidoService.mudarEstadoPedido(pedidoDTO);
+        return new ResponseEntity<>(pedidoUpdated, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

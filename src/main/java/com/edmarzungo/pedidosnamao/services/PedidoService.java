@@ -1,5 +1,6 @@
 package com.edmarzungo.pedidosnamao.services;
 
+import com.edmarzungo.pedidosnamao.enumerations.EstadoPedido;
 import com.edmarzungo.pedidosnamao.services.dtos.CardapioDTO;
 import com.edmarzungo.pedidosnamao.services.dtos.PedidoDTO;
 
@@ -16,4 +17,6 @@ public interface PedidoService {
     void delete(UUID pedidoId);
 
     PedidoDTO init(PedidoDTO pedidoDTO);
+
+    PedidoDTO mudarEstadoPedido(PedidoDTO pedidoDTO);
 }
