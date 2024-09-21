@@ -16,7 +16,7 @@ public interface PedidoService {
     PedidoDTO getOne(UUID pedidoId);
     void delete(UUID pedidoId);
 
-    PedidoDTO init(PedidoDTO pedidoDTO);
+    PedidoDTO init();
 
     PedidoDTO mudarEstadoPedido(PedidoDTO pedidoDTO);
 }

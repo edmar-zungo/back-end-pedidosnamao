@@ -11,6 +11,7 @@ import com.edmarzungo.pedidosnamao.services.mappers.PedidoMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -33,7 +34,6 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public PedidoDTO save(PedidoDTO pedidoDTO) {
-        pedidoDTO = init(pedidoDTO);
         PedidoModel pedidoModel = pedidoMapper.pedidoDTOToPedidoModel(pedidoDTO);
         pedidoModel = pedidoRepository.save(pedidoModel);
         pedidoDTO = pedidoMapper.pedidoToPedidoDTO(pedidoModel);
@@ -94,51 +94,67 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public PedidoDTO init(PedidoDTO pedidoDTO) {
-        PedidoModel pedidoModel = pedidoMapper.pedidoDTOToPedidoModel(pedidoDTO);
+    public PedidoDTO init() {
 
-        pedidoModel.setSequencia(pedidoModel.getSequencia() == null ? gerarSequencia() : pedidoModel.getSequencia() );
-        if (pedidoModel.getSequencia() != null && existeSequencia(pedidoModel.getSequencia())){
-            throw new GlobalExeception("Sequência existente!");
-        }
-        pedidoModel.setNumero(pedidoModel.getNumero() == null ? gerarNumero(pedidoModel.getSequencia()) : pedidoModel.getNumero());
-        if (pedidoModel.getNumero() != null && existeNumero(pedidoModel.getNumero())){
-            throw new GlobalExeception("Já existe um Pedido com este número - " + pedidoModel.getNumero() + "!");
-        }
-        pedidoModel.setEstadoPedido( pedidoModel.getEstadoPedido() == null ? EstadoPedido.PENDENTE : pedidoModel.getEstadoPedido() );
-        pedidoModel.setDataCriacao( pedidoModel.getDataCriacao() == null ? LocalDateTime.now() : pedidoModel.getDataCriacao() );
-        pedidoModel.setDataActualizacao( pedidoModel.getDataActualizacao() == null ? LocalDateTime.now() : pedidoModel.getDataActualizacao() );
-        pedidoModel.setDeliver( pedidoModel.isDeliver() == null ? false : pedidoModel.isDeliver() );
+        PedidoModel novoPedido = new PedidoModel();
 
-        if ((!pedidoModel.isDeliver()) && pedidoModel.getMesa() == null){
-            throw new GlobalExeception("Adicione uma mesa!");
-        }
+        var sequencia = gerarSequencia();
+        var numeroPedido = gerarNumero(sequencia);
+        var estadoPendente = EstadoPedido.PENDENTE;
+        var dataCriacao = LocalDateTime.now();
+        var dataActualizacao = LocalDateTime.now();
 
-        if (pedidoModel.isDeliver().equals(false) && (pedidoModel.getMesa().getEstadoMesa().equals(EstadoItem.RESERVADO) || pedidoModel.getMesa().getEstadoMesa().equals(EstadoItem.INDISPONIVEL))){
-            throw new GlobalExeception("A mesa escolhida encontra-se indisponível no momento!");
-        }
+        novoPedido.setSequencia(sequencia);
+        novoPedido.setNumero(numeroPedido);
+        novoPedido.setEstadoPedido(estadoPendente);
+        novoPedido.setDataCriacao(dataCriacao);
+        novoPedido.setDataActualizacao(dataActualizacao);
 
-        pedidoModel.setTotalPagar(pedidoModel.getTotalPagar() == null ? ZERO : pedidoModel.getTotalPagar());
+//
+//        if (pedidoModel.getSequencia() != null && existeSequencia(pedidoModel.getSequencia())){
+//            throw new GlobalExeception("Sequência existente!");
+//        }
+//
+//        if (pedidoModel.getNumero() != null && existeNumero(pedidoModel.getNumero())){
+//            throw new GlobalExeception("Já existe um Pedido com este número - " + pedidoModel.getNumero() + "!");
+//        }
+//        pedidoModel.setEstadoPedido( pedidoModel.getEstadoPedido() == null ? EstadoPedido.PENDENTE : pedidoModel.getEstadoPedido() );
+//        pedidoModel.setDataCriacao( pedidoModel.getDataCriacao() == null ? LocalDateTime.now() : pedidoModel.getDataCriacao() );
+//        pedidoModel.setDataActualizacao( pedidoModel.getDataActualizacao() == null ? LocalDateTime.now() : pedidoModel.getDataActualizacao() );
+//        pedidoModel.setDeliver( pedidoModel.isDeliver() == null ? false : pedidoModel.isDeliver() );
+//
+//        if ((!pedidoModel.isDeliver()) && pedidoModel.getMesa() == null){
+//            throw new GlobalExeception("Adicione uma mesa!");
+//        }
+//
+//        if (pedidoModel.isDeliver().equals(false) && (pedidoModel.getMesa().getEstadoMesa().equals(EstadoItem.RESERVADO) || pedidoModel.getMesa().getEstadoMesa().equals(EstadoItem.INDISPONIVEL))){
+//            throw new GlobalExeception("A mesa escolhida encontra-se indisponível no momento!");
+//        }
+//
+//        pedidoModel.setTotalPagar(pedidoModel.getTotalPagar() == null ? ZERO : pedidoModel.getTotalPagar());
+//
+//        if (pedidoModel.isDeliver().equals(true)){
+//            if (pedidoModel.getEnderecoEntregaDetalhado() == null){
+//                throw new GlobalExeception("Adicione o endereço de entrega, de forma detalhada.");
+//            }
+//
+//            pedidoModel.setTempoEntrega(LocalTime.of(1, 20));
+//            pedidoModel.setDescricaoEntrega( geraDesdcricaoPedido(pedidoModel) );
+//
+//
+//            pedidoModel.setValorEntrega(pedidoModel.getValorEntrega() == null ?  ZERO : pedidoModel.getValorEntrega());
+//            pedidoModel.setTotalPagar( totalPagar(pedidoModel.getTotalPagar(), pedidoModel.getValorEntrega()) );
+//        }
+//
+//        pedidoModel.setTotalPago(pedidoModel.getTotalPago() == null ? ZERO : pedidoModel.getTotalPago() );
+//        pedidoModel.setTotalTroco(pedidoModel.getTotalTroco() == null ? ZERO : pedidoModel.getTotalTroco() );
+//
+//        pedidoModel.setDescricao(geraDesdcricaoPedido(pedidoModel));
 
-        if (pedidoModel.isDeliver().equals(true)){
-            if (pedidoModel.getEnderecoEntregaDetalhado() == null){
-                throw new GlobalExeception("Adicione o endereço de entrega, de forma detalhada.");
-            }
-
-            pedidoModel.setTempoEntrega(LocalTime.of(1, 20));
-            pedidoModel.setDescricaoEntrega( geraDesdcricaoPedido(pedidoModel) );
+        PedidoDTO pedidoDTO = pedidoMapper.pedidoToPedidoDTO(novoPedido);
+        pedidoDTO = save(pedidoDTO);
 
 
-            pedidoModel.setValorEntrega(pedidoModel.getValorEntrega() == null ?  ZERO : pedidoModel.getValorEntrega());
-            pedidoModel.setTotalPagar( totalPagar(pedidoModel.getTotalPagar(), pedidoModel.getValorEntrega()) );
-        }
-
-        pedidoModel.setTotalPago(pedidoModel.getTotalPago() == null ? ZERO : pedidoModel.getTotalPago() );
-        pedidoModel.setTotalTroco(pedidoModel.getTotalTroco() == null ? ZERO : pedidoModel.getTotalTroco() );
-
-        pedidoModel.setDescricao(geraDesdcricaoPedido(pedidoModel));
-
-        pedidoDTO = pedidoMapper.pedidoToPedidoDTO(pedidoModel);
 
         return pedidoDTO;
     }
