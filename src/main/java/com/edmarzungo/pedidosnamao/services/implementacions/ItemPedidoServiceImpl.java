@@ -110,4 +110,13 @@ public class ItemPedidoServiceImpl implements ItemPedidoService {
 
         return itemPedidoDTO;
     }
+
+    @Override
+    public List<ItemPedidoDTO> itensPedidoByPedido(UUID pedidoId) {
+        return itemPedidoRepository.findAll()
+                .stream()
+                .filter(x -> x.getPedido().getId().equals(pedidoId))
+                .map(itemPedidoMapper::itemPedidoModelToItemPedidoDTO)
+                .toList();
+    }
 }

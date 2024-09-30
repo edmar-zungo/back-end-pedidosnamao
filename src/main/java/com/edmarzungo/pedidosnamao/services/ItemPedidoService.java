@@ -17,4 +17,5 @@ public interface ItemPedidoService {
     void delete(UUID itemPedidoId);
 
     ItemPedidoDTO init(ItemPedidoDTO itemPedidoDTO);
+    List<ItemPedidoDTO> itensPedidoByPedido(UUID pedidoId);
 }

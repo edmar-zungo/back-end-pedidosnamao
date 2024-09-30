@@ -26,6 +26,12 @@ public class ItemPedidoController {
         return ResponseEntity.ok().body(itemPedidoDTOList);
     }
 
+    @GetMapping("/by-pedido/{pedidoId}")
+    public ResponseEntity<List<ItemPedidoDTO>> getAllByPedido(@PathVariable(value = "pedidoId") UUID pedidoId){
+        List<ItemPedidoDTO> itemPedidoDTOList = itemPedidoService.itensPedidoByPedido(pedidoId);
+        return ResponseEntity.ok().body(itemPedidoDTOList);
+    }
+
     @PostMapping("")
     public ResponseEntity<ItemPedidoDTO> save(@Valid @RequestBody ItemPedidoDTO itemPedidoDTO){
         ItemPedidoDTO itemPedidoSaved = itemPedidoService.save(itemPedidoDTO);

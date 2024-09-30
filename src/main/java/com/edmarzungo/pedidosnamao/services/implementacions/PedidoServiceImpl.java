@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,21 +46,36 @@ public class PedidoServiceImpl implements PedidoService {
         PedidoModel pedidoToUpdate = pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new GlobalExeception("Nenhum Pedido encontrado!"));
 
-        pedidoToUpdate.setDescricao(pedidoDTO.descricao());
-        pedidoToUpdate.setEstadoPedido(pedidoDTO.estadoPedido());
-        pedidoToUpdate.setSequencia(pedidoDTO.sequencia());
-        pedidoToUpdate.setNumero(pedidoDTO.numero());
-        pedidoToUpdate.setDataActualizacao(LocalDateTime.now());
-        pedidoToUpdate.setDataCriacao(pedidoDTO.dataCriacao());
-        pedidoToUpdate.setDeliver(pedidoDTO.deliver());
-        pedidoToUpdate.setDescricaoEntrega(pedidoDTO.descricaoEntrega());
-        pedidoToUpdate.setEnderecoEntregaDetalhado(pedidoDTO.enderecoEntregaDetalhado());
         pedidoToUpdate.setMesa(pedidoDTO.mesa());
-        pedidoToUpdate.setTempoEntrega(pedidoDTO.tempoEntrega());
-        pedidoToUpdate.setTotalPagar(pedidoDTO.totalPagar());
-        pedidoToUpdate.setTotalPago(pedidoDTO.totalPago());
-        pedidoToUpdate.setTotalTroco(pedidoDTO.totalTroco());
-        pedidoToUpdate.setValorEntrega(pedidoDTO.valorEntrega());
+        pedidoToUpdate.setDescricao(geraDesdcricaoPedido(pedidoToUpdate));
+        pedidoToUpdate.setDataActualizacao(LocalDateTime.now());
+        pedidoToUpdate.setDeliver(pedidoDTO.deliver());
+
+        if (pedidoToUpdate.isDeliver().equals(false)){
+            if (pedidoToUpdate.getMesa() == null){
+                throw new GlobalExeception("Adicione uma mesa!");
+            }
+
+            if ((pedidoToUpdate.getMesa().getEstadoMesa().equals(EstadoItem.RESERVADO) || pedidoToUpdate.getMesa().getEstadoMesa().equals(EstadoItem.INDISPONIVEL))){
+                throw new GlobalExeception("A mesa escolhida encontra-se indisponível no momento!");
+            }
+        }
+
+        if (pedidoToUpdate.isDeliver().equals(true)){
+            if (pedidoToUpdate.getEnderecoEntregaDetalhado() == null){
+                throw new GlobalExeception("Adicione o endereço de entrega, de forma detalhada.");
+            }
+
+            pedidoToUpdate.setEnderecoEntregaDetalhado(pedidoDTO.enderecoEntregaDetalhado());
+            pedidoToUpdate.setTempoEntrega(LocalTime.of(1, 20));
+            pedidoToUpdate.setDescricaoEntrega( geraDesdcricaoPedido(pedidoToUpdate) );
+            pedidoToUpdate.setValorEntrega(ZERO);
+        }
+
+        pedidoToUpdate.setTotalPagar(ZERO);
+        pedidoToUpdate.setTotalPago(ZERO);
+        pedidoToUpdate.setTotalTroco(ZERO);
+        pedidoToUpdate.setEstadoPedido(EstadoPedido.CONFIRMADO);
 
         pedidoToUpdate = pedidoRepository.save(pedidoToUpdate);
         pedidoDTO = pedidoMapper.pedidoToPedidoDTO(pedidoToUpdate);
@@ -123,33 +139,14 @@ public class PedidoServiceImpl implements PedidoService {
 //        pedidoModel.setDataActualizacao( pedidoModel.getDataActualizacao() == null ? LocalDateTime.now() : pedidoModel.getDataActualizacao() );
 //        pedidoModel.setDeliver( pedidoModel.isDeliver() == null ? false : pedidoModel.isDeliver() );
 //
-//        if ((!pedidoModel.isDeliver()) && pedidoModel.getMesa() == null){
-//            throw new GlobalExeception("Adicione uma mesa!");
-//        }
+
 //
-//        if (pedidoModel.isDeliver().equals(false) && (pedidoModel.getMesa().getEstadoMesa().equals(EstadoItem.RESERVADO) || pedidoModel.getMesa().getEstadoMesa().equals(EstadoItem.INDISPONIVEL))){
-//            throw new GlobalExeception("A mesa escolhida encontra-se indisponível no momento!");
-//        }
-//
-//        pedidoModel.setTotalPagar(pedidoModel.getTotalPagar() == null ? ZERO : pedidoModel.getTotalPagar());
-//
-//        if (pedidoModel.isDeliver().equals(true)){
-//            if (pedidoModel.getEnderecoEntregaDetalhado() == null){
-//                throw new GlobalExeception("Adicione o endereço de entrega, de forma detalhada.");
-//            }
-//
-//            pedidoModel.setTempoEntrega(LocalTime.of(1, 20));
-//            pedidoModel.setDescricaoEntrega( geraDesdcricaoPedido(pedidoModel) );
-//
-//
-//            pedidoModel.setValorEntrega(pedidoModel.getValorEntrega() == null ?  ZERO : pedidoModel.getValorEntrega());
-//            pedidoModel.setTotalPagar( totalPagar(pedidoModel.getTotalPagar(), pedidoModel.getValorEntrega()) );
-//        }
-//
-//        pedidoModel.setTotalPago(pedidoModel.getTotalPago() == null ? ZERO : pedidoModel.getTotalPago() );
-//        pedidoModel.setTotalTroco(pedidoModel.getTotalTroco() == null ? ZERO : pedidoModel.getTotalTroco() );
-//
-//        pedidoModel.setDescricao(geraDesdcricaoPedido(pedidoModel));
+        novoPedido.setValorEntrega(ZERO);
+        novoPedido.setTotalPago(ZERO);
+        novoPedido.setTotalTroco(ZERO);
+        novoPedido.setTotalPagar(ZERO);
+
+        novoPedido.setDescricao(geraDesdcricaoPedido(novoPedido));
 
         PedidoDTO pedidoDTO = pedidoMapper.pedidoToPedidoDTO(novoPedido);
         pedidoDTO = save(pedidoDTO);
@@ -199,12 +196,18 @@ public class PedidoServiceImpl implements PedidoService {
         String descricao = "";
 
         if (pedidoModel.isDeliver()){
-            descricao = "Pedido de entrega número: " + pedidoModel.getNumero() + ", para o endereço: " + pedidoModel.getEnderecoEntregaDetalhado() + ", na data e hora: " + pedidoModel.getDataActualizacao() + ", tempo de entrega: " + pedidoModel.getTempoEntrega().getHour() +":" + pedidoModel.getTempoEntrega().getMinute() + "min" + ", no valor de: " + pedidoModel.getTotalPagar();
+            descricao = "Pedido de entrega número: " + pedidoModel.getNumero() + ", para o endereço: " + pedidoModel.getEnderecoEntregaDetalhado() + " tempo aproximado de entrega: " + pedidoModel.getTempoEntrega().format(DateTimeFormatter.ISO_LOCAL_TIME);
 
             return descricao;
         }
 
-        descricao = "Pedido número: " + pedidoModel.getNumero() + " para a " + pedidoModel.getMesa().getDescricao();
+        if(pedidoModel.getMesa() != null){
+            descricao = "Pedido número: " + pedidoModel.getNumero() + " para a " + pedidoModel.getMesa().getDescricao();
+
+            return descricao;
+        }
+
+        descricao = "Pedido número: " + pedidoModel.getNumero() + pedidoModel.getDataCriacao();
 
         return descricao;
     }
