@@ -125,6 +125,7 @@ public class PedidoServiceImpl implements PedidoService {
         novoPedido.setEstadoPedido(estadoPendente);
         novoPedido.setDataCriacao(dataCriacao);
         novoPedido.setDataActualizacao(dataActualizacao);
+        novoPedido.setDeliver(false);
 
 //
 //        if (pedidoModel.getSequencia() != null && existeSequencia(pedidoModel.getSequencia())){
