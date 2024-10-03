@@ -58,7 +58,7 @@ public class PedidoController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/calculaTotalPagar/{id}")
+    @GetMapping("/calculaTotalPagar/{id}")
     public ResponseEntity<PedidoDTO> calculaTotalPagar(@PathVariable(value = "id") UUID id){
         PedidoDTO pedidoResult = pedidoService.calculaTotalPagar(id);
         return new ResponseEntity<>(pedidoResult, HttpStatus.OK);
