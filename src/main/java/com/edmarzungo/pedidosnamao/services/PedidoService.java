@@ -19,4 +19,5 @@ public interface PedidoService {
     PedidoDTO init();
 
     PedidoDTO mudarEstadoPedido(PedidoDTO pedidoDTO);
+    PedidoDTO calculaTotalPagar(UUID pedidoId);
 }

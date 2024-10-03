@@ -5,13 +5,15 @@ import com.edmarzungo.pedidosnamao.enumerations.EstadoItem;
 import com.edmarzungo.pedidosnamao.enumerations.EstadoPedido;
 import com.edmarzungo.pedidosnamao.exceptions.GlobalExeception;
 import com.edmarzungo.pedidosnamao.repositories.PedidoRepository;
+import com.edmarzungo.pedidosnamao.services.ItemPedidoService;
 import com.edmarzungo.pedidosnamao.services.PedidoService;
+import com.edmarzungo.pedidosnamao.services.dtos.ItemPedidoDTO;
 import com.edmarzungo.pedidosnamao.services.dtos.PedidoDTO;
+import com.edmarzungo.pedidosnamao.services.mappers.ItemPedidoMapper;
 import com.edmarzungo.pedidosnamao.services.mappers.PedidoMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -25,12 +27,16 @@ public class PedidoServiceImpl implements PedidoService {
 
     private final PedidoRepository pedidoRepository;
     private final PedidoMapper pedidoMapper;
+    private final ItemPedidoService itemPedidoService;
+    private final ItemPedidoMapper itemPedidoMapper;
 
     final Double ZERO = 0.0d;
 
-    public PedidoServiceImpl(PedidoRepository pedidoRepository, PedidoMapper pedidoMapper) {
+    public PedidoServiceImpl(PedidoRepository pedidoRepository, PedidoMapper pedidoMapper, ItemPedidoService itemPedidoService, ItemPedidoMapper itemPedidoMapper) {
         this.pedidoRepository = pedidoRepository;
         this.pedidoMapper = pedidoMapper;
+        this.itemPedidoService = itemPedidoService;
+        this.itemPedidoMapper = itemPedidoMapper;
     }
 
     @Override
@@ -45,6 +51,8 @@ public class PedidoServiceImpl implements PedidoService {
     public PedidoDTO update(PedidoDTO pedidoDTO, UUID pedidoId) {
         PedidoModel pedidoToUpdate = pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new GlobalExeception("Nenhum Pedido encontrado!"));
+
+        List<ItemPedidoDTO> itemPedidoDTOList = itemPedidoService.getAll().stream().filter(x -> x.pedido().getId().equals(pedidoId)).toList();
 
         pedidoToUpdate.setMesa(pedidoDTO.mesa());
         pedidoToUpdate.setDescricao(geraDesdcricaoPedido(pedidoToUpdate));
@@ -70,6 +78,10 @@ public class PedidoServiceImpl implements PedidoService {
             pedidoToUpdate.setTempoEntrega(LocalTime.of(1, 20));
             pedidoToUpdate.setDescricaoEntrega( geraDesdcricaoPedido(pedidoToUpdate) );
             pedidoToUpdate.setValorEntrega(ZERO);
+        }
+
+        if (itemPedidoDTOList.isEmpty()){
+            throw new GlobalExeception("Adicione itens ao pedido!");
         }
 
         pedidoToUpdate.setTotalPagar(ZERO);
@@ -145,7 +157,6 @@ public class PedidoServiceImpl implements PedidoService {
         novoPedido.setValorEntrega(ZERO);
         novoPedido.setTotalPago(ZERO);
         novoPedido.setTotalTroco(ZERO);
-        novoPedido.setTotalPagar(ZERO);
 
         novoPedido.setDescricao(geraDesdcricaoPedido(novoPedido));
 
@@ -195,24 +206,43 @@ public class PedidoServiceImpl implements PedidoService {
 
     private String geraDesdcricaoPedido(PedidoModel pedidoModel){
         String descricao = "";
+        DateTimeFormatter dateTimeFormatterDefault = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm");
 
         if (pedidoModel.isDeliver()){
-            descricao = "Pedido de entrega número: " + pedidoModel.getNumero() + ", para o endereço: " + pedidoModel.getEnderecoEntregaDetalhado() + " tempo aproximado de entrega: " + pedidoModel.getTempoEntrega().format(DateTimeFormatter.ISO_LOCAL_TIME);
+            descricao = "Pedido de entrega número: " + pedidoModel.getNumero() + ", feito aos: " + pedidoModel.getDataCriacao() + ", para o endereço: " + pedidoModel.getEnderecoEntregaDetalhado() + " tempo aproximado de entrega: " + pedidoModel.getTempoEntrega().format(dateTimeFormatterDefault);
 
             return descricao;
         }
 
         if(pedidoModel.getMesa() != null){
-            descricao = "Pedido número: " + pedidoModel.getNumero() + " para a " + pedidoModel.getMesa().getDescricao();
+            descricao = "Pedido número: " + pedidoModel.getNumero() + ", feito aos: " + pedidoModel.getDataCriacao().format(dateTimeFormatterDefault) + " para a " + pedidoModel.getMesa().getDescricao();
 
             return descricao;
         }
 
-        descricao = "Pedido número: " + pedidoModel.getNumero() + pedidoModel.getDataCriacao();
+        descricao = "Pedido número: " + pedidoModel.getNumero() + ", feito aos: " + pedidoModel.getDataCriacao().format(dateTimeFormatterDefault);
 
         return descricao;
     }
     private Double totalPagar(Double valorPagar, Double valorEntrega){
         return valorPagar + valorEntrega;
+    }
+
+    @Override
+    public PedidoDTO calculaTotalPagar(UUID pedidoId){
+        PedidoDTO pedidoDTO = getOne(pedidoId);
+        PedidoModel pedidoModel = pedidoMapper.pedidoDTOToPedidoModel(pedidoDTO);
+        List<ItemPedidoDTO> itemPedidoDTOList = itemPedidoService.getAll().stream().filter(x -> x.pedido().getId().equals(pedidoModel.getId())).toList();
+        Double totalPagar = ZERO;
+
+        for (var item: itemPedidoDTOList){
+            totalPagar += item.precoItemPedido();
+        }
+
+        pedidoModel.setTotalPagar(totalPagar);
+        pedidoDTO = pedidoMapper.pedidoToPedidoDTO(pedidoModel);
+
+        return pedidoDTO;
+
     }
 }
