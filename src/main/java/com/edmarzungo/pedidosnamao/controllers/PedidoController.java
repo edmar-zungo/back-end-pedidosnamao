@@ -4,6 +4,7 @@ package com.edmarzungo.pedidosnamao.controllers;
 import com.edmarzungo.pedidosnamao.enumerations.EstadoPedido;
 import com.edmarzungo.pedidosnamao.services.PedidoService;
 import com.edmarzungo.pedidosnamao.services.dtos.PedidoDTO;
+import com.edmarzungo.pedidosnamao.services.dtos.PedidoPageDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +25,15 @@ public class PedidoController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<PedidoDTO>> getAll(){
-        List<PedidoDTO> pedidoDTOList = pedidoService.getAll();
-        return new ResponseEntity<>(pedidoDTOList, HttpStatus.OK);
+    public ResponseEntity<PedidoPageDTO> getAll(@RequestParam int pageNumber, @RequestParam int pageItens){
+        PedidoPageDTO pedidoPageDTO = pedidoService.getAllPageble(pageNumber, pageItens);
+        return new ResponseEntity<>(pedidoPageDTO, HttpStatus.OK);
     }
+//    @GetMapping("")
+//    public ResponseEntity<List<PedidoDTO>> getAll(){
+//        List<PedidoDTO> pedidoDTOList = pedidoService.getAll();
+//        return new ResponseEntity<>(pedidoDTOList, HttpStatus.OK);
+//    }
 
     @PostMapping("")
     public ResponseEntity<PedidoDTO> save(){

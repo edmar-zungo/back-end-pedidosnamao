@@ -9,11 +9,15 @@ import com.edmarzungo.pedidosnamao.services.ItemPedidoService;
 import com.edmarzungo.pedidosnamao.services.PedidoService;
 import com.edmarzungo.pedidosnamao.services.dtos.ItemPedidoDTO;
 import com.edmarzungo.pedidosnamao.services.dtos.PedidoDTO;
+import com.edmarzungo.pedidosnamao.services.dtos.PedidoPageDTO;
 import com.edmarzungo.pedidosnamao.services.mappers.ItemPedidoMapper;
 import com.edmarzungo.pedidosnamao.services.mappers.PedidoMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -101,6 +105,13 @@ public class PedidoServiceImpl implements PedidoService {
                 .stream()
                 .map(pedidoMapper::pedidoToPedidoDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public PedidoPageDTO getAllPageble(int pageNumber, int pageItens) {
+        Page<PedidoDTO> pedidoDTOPage = pedidoRepository.findAll(PageRequest.of(pageNumber, pageItens)).map(pedidoMapper::pedidoToPedidoDTO);
+        List<PedidoDTO> pedidoDTOList = pedidoDTOPage.getContent();
+        return new PedidoPageDTO(pedidoDTOList, pedidoDTOPage.getTotalElements(), pedidoDTOPage.getTotalPages());
     }
 
     @Override
