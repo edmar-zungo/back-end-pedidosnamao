@@ -111,7 +111,9 @@ public class PedidoServiceImpl implements PedidoService {
     public PedidoPageDTO getAllPageble(int pageNumber, int pageItens) {
         Page<PedidoDTO> pedidoDTOPage = pedidoRepository.findAll(PageRequest.of(pageNumber, pageItens)).map(pedidoMapper::pedidoToPedidoDTO);
         List<PedidoDTO> pedidoDTOList = pedidoDTOPage.getContent();
-        return new PedidoPageDTO(pedidoDTOList, pedidoDTOPage.getTotalElements(), pedidoDTOPage.getTotalPages());
+        var elementoPage = pedidoDTOPage.getTotalElements();
+        var paginasReturn = pedidoDTOPage.getTotalPages();
+        return new PedidoPageDTO(pedidoDTOList,elementoPage, paginasReturn);
     }
 
     @Override

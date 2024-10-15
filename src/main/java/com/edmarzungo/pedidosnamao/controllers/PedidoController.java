@@ -25,7 +25,8 @@ public class PedidoController {
     }
 
     @GetMapping("")
-    public ResponseEntity<PedidoPageDTO> getAll(@RequestParam int pageNumber, @RequestParam int pageItens){
+    public ResponseEntity<PedidoPageDTO> getAll(@RequestParam int pageNumber, @RequestParam(defaultValue = "5" +
+            "") int pageItens){
         PedidoPageDTO pedidoPageDTO = pedidoService.getAllPageble(pageNumber, pageItens);
         return new ResponseEntity<>(pedidoPageDTO, HttpStatus.OK);
     }
