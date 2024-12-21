@@ -1,0 +1,48 @@
+# Configurações do DataSource
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pedidosnamao
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari: # Configurações adicionais do HikariCP (gerenciador de conexões)
+      maximum-pool-size: 10       # Máximo de conexões no pool
+      minimum-idle: 2             # Mínimo de conexões ociosas
+      idle-timeout: 30000         # Tempo limite (ms) para conexão inativa ser removida
+      connection-timeout: 30000   # Tempo limite (ms) para uma conexão ser obtida
+      max-lifetime: 1800000       # Tempo máximo (ms) de vida útil de uma conexão
+      pool-name: HikariCP-Pool    # Nome do pool de conexões
+
+  # Configurações do Hibernate
+  jpa:
+    database: postgresql
+    open-in-view: false           # Evita possíveis erros de LazyInitializationException
+    show-sql: true                # Exibe SQL no console (debug)
+    hibernate:
+      ddl-auto: update            # Atualiza o esquema, mas cuidado em produção
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true          # Formata o SQL para melhor leitura
+        jdbc:
+          lob:
+            non_contextual_creation: true  # Corrige problemas com LOBs no PostgreSQL
+
+# Configurações de Logs
+logging:
+  level:
+    root: info
+    org.springframework: info
+    org.hibernate.SQL: debug          # Exibe queries SQL no log
+    org.hibernate.type.descriptor.sql.BasicBinder: trace  # Exibe valores dos parâmetros SQL
+
+# Configuração de Inicialização
+spring.main:
+  allow-bean-definition-overriding: true  # Evita conflitos de beans duplicados
+  lazy-initialization: true               # Inicialização preguiçosa dos beans (ajuda no desempenho)
+
+# Configuração do servidor
+server:
+  port: 8080              # Porta padrão do servidor
+  servlet:
+    context-path: /api     # Define um contexto base para o endpoint
