@@ -11,7 +11,7 @@
 	<groupId>com.edmarzungo</groupId>
 	<artifactId>pedidosnamao</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>pedidosnamao</name>
+	<username>pedidosnamao</username>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>

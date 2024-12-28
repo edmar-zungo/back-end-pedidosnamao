@@ -13,7 +13,7 @@ public class RegistrationRequest {
     private String username;
     @NotEmpty(message = "O campo password é obrigatório")
     @NotBlank(message = "O campo password é obrigatório")
-    @Size(min = 4, message = "A password te que ter pelomenos 4 caracteres")
+    @Size(min = 4, message = "A password tem que ter pelomenos 4 caracteres")
     private String password;
     @NotEmpty(message = "O campo email é obrigatório")
     @NotBlank(message = "O campo email é obrigatório")

@@ -1,5 +1,7 @@
 package com.edmarzungo.pedidosnamao.security.controllers;
 
+import com.edmarzungo.pedidosnamao.security.AuthenticationRequest;
+import com.edmarzungo.pedidosnamao.security.AuthenticationResponse;
 import com.edmarzungo.pedidosnamao.security.RegistrationRequest;
 import com.edmarzungo.pedidosnamao.security.service.AuthenticationServie;
 import jakarta.validation.Valid;
@@ -23,6 +25,11 @@ public class AuthenticationController {
         var token = servie.register(request);
 
         return ResponseEntity.ok(token);
+    }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthenticationResponse> authentication(@RequestBody @Valid AuthenticationRequest request){
+        return ResponseEntity.ok(servie.authenticate(request));
     }
 
 }

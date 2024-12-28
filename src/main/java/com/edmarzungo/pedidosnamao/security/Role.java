@@ -26,8 +26,7 @@ public class Role {
     @Column(insertable = false)
     private LocalDateTime lastModifiedDate;
 
-    @OneToMany()
-    @JsonIgnore
+    @ManyToMany(mappedBy = "roles")
     private List<User> users;
 
     public Role() {

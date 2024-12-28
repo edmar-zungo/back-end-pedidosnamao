@@ -23,7 +23,7 @@ public class User implements UserDetails, Principal {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Column(unique = true)
-    private String name;
+    private String username;
     private String email;
     private String password;
     private boolean accountLoked;
@@ -36,15 +36,20 @@ public class User implements UserDetails, Principal {
     @Column(insertable = false)
     private LocalDateTime lastModifiedDate;
 
-    @OneToMany(fetch = FetchType.EAGER)
-     private List<Role> roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles;
 
     public User() {
     }
 
     public User(UUID userId, String username, String email, String password, boolean accountLoked, boolean enabled, List<Role> roles) {
         this.id = userId;
-        this.name = username;
+        this.username = username;
         this.email = email;
         this.password = password;
         this.accountLoked = accountLoked;
@@ -54,7 +59,7 @@ public class User implements UserDetails, Principal {
 
     @Override
     public String getName() {
-        return getUsername();
+        return username;
     }
 
     @Override
@@ -71,7 +76,7 @@ public class User implements UserDetails, Principal {
 
     @Override
     public String getUsername() {
-        return getUsername() + " - " + getEmail();
+        return getName();
     }
 
     @Override
@@ -91,7 +96,7 @@ public class User implements UserDetails, Principal {
 
     @Override
     public boolean isEnabled() {
-        return enabled();
+        return this.enabled();
     }
 
 
@@ -103,12 +108,12 @@ public class User implements UserDetails, Principal {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -116,7 +121,7 @@ public class User implements UserDetails, Principal {
     }
 
     public String getMyPassword(){
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -124,7 +129,7 @@ public class User implements UserDetails, Principal {
     }
 
     public boolean isAccountLoked() {
-        return accountLoked;
+        return this.accountLoked;
     }
 
     public void setAccountLoked(boolean accountLoked) {
@@ -132,7 +137,7 @@ public class User implements UserDetails, Principal {
     }
 
     public boolean enabled(){
-        return enabled;
+        return this.enabled;
     }
 
     public void setEnabled(boolean enabled) {
@@ -140,7 +145,7 @@ public class User implements UserDetails, Principal {
     }
 
     public List<Role> getRoles() {
-        return roles;
+        return this.roles;
     }
 
     public void setRoles(List<Role> roles) {
@@ -152,19 +157,19 @@ public class User implements UserDetails, Principal {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return accountLoked == user.accountLoked && enabled == user.enabled && Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+        return accountLoked == user.accountLoked && enabled == user.enabled && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, password, accountLoked, enabled);
+        return Objects.hash(id, username, email, password, accountLoked, enabled);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", accountLoked=" + accountLoked +
