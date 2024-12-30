@@ -23,7 +23,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true          # Formata o SQL para melhor leitura
+        #format_sql: true           Formata o SQL para melhor leitura
         jdbc:
           lob:
             non_contextual_creation: true  # Corrige problemas com LOBs no PostgreSQL
