@@ -22,9 +22,10 @@ public class AuthenticationController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<?> register(@RequestBody @Valid RegistrationRequest request){
-        var token = servie.register(request);
 
-        return ResponseEntity.ok(token);
+        servie.register(request);
+
+        return ResponseEntity.ok("Token gerado com sucesso!");
     }
 
     @PostMapping("/authenticate")
