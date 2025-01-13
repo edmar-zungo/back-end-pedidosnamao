@@ -8,11 +8,11 @@ import java.util.Objects;
 
 public class AuthenticationRequest {
     @NotEmpty(message = "O campo password é obrigatório")
-    @NotBlank(message = "O campo password é obrigatório")
+
     @Size(min = 4, message = "A password tem que ter pelomenos 4 caracteres")
     private String password;
     @NotEmpty(message = "O campo username é obrigatório")
-    @NotBlank(message = "O campo username é obrigatório")
+
     private String username;
 
     public AuthenticationRequest() {
@@ -23,19 +23,19 @@ public class AuthenticationRequest {
         this.username = username;
     }
 
-    public @NotEmpty(message = "O campo password é obrigatório") @NotBlank(message = "O campo password é obrigatório") @Size(min = 4, message = "A password te que ter pelomenos 4 caracteres") String getPassword() {
+    public @NotEmpty(message = "O campo password é obrigatório") @Size(min = 4, message = "A password te que ter pelomenos 4 caracteres") String getPassword() {
         return password;
     }
 
-    public void setPassword(@NotEmpty(message = "O campo password é obrigatório") @NotBlank(message = "O campo password é obrigatório") @Size(min = 4, message = "A password te que ter pelomenos 4 caracteres") String password) {
+    public void setPassword(@NotEmpty(message = "O campo password é obrigatório") @Size(min = 4, message = "A password te que ter pelomenos 4 caracteres") String password) {
         this.password = password;
     }
 
-    public @NotEmpty(message = "O campo username é obrigatório") @NotBlank(message = "O campo username é obrigatório") String getUsername() {
+    public @NotEmpty(message = "O campo username é obrigatório")  String getUsername() {
         return username;
     }
 
-    public void setUsername(@NotEmpty(message = "O campo username é obrigatório") @NotBlank(message = "O campo username é obrigatório") String username) {
+    public void setUsername(@NotEmpty(message = "O campo username é obrigatório") String username) {
         this.username = username;
     }
 
