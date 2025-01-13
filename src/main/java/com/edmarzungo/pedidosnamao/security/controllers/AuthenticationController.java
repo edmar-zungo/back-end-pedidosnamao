@@ -2,6 +2,7 @@ package com.edmarzungo.pedidosnamao.security.controllers;
 
 import com.edmarzungo.pedidosnamao.security.AuthenticationRequest;
 import com.edmarzungo.pedidosnamao.security.AuthenticationResponse;
+import com.edmarzungo.pedidosnamao.security.RegisterResponse;
 import com.edmarzungo.pedidosnamao.security.RegistrationRequest;
 import com.edmarzungo.pedidosnamao.security.service.AuthenticationServie;
 import jakarta.validation.Valid;
@@ -21,11 +22,8 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<?> register(@RequestBody @Valid RegistrationRequest request){
-
-        servie.register(request);
-
-        return ResponseEntity.ok("Token gerado com sucesso!");
+    public ResponseEntity<RegisterResponse> register(@RequestBody @Valid RegistrationRequest request){
+        return ResponseEntity.ok(servie.register(request));
     }
 
     @PostMapping("/authenticate")

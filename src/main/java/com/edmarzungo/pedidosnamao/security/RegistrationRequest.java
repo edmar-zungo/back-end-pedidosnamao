@@ -9,14 +9,11 @@ import java.util.Objects;
 public class RegistrationRequest {
 
     @NotEmpty(message = "O campo username é obrigatório")
-    @NotBlank(message = "O campo username é obrigatório")
     private String username;
     @NotEmpty(message = "O campo password é obrigatório")
-    @NotBlank(message = "O campo password é obrigatório")
     @Size(min = 4, message = "A password tem que ter pelomenos 4 caracteres")
     private String password;
     @NotEmpty(message = "O campo email é obrigatório")
-    @NotBlank(message = "O campo email é obrigatório")
     private String email;
 
     public RegistrationRequest() {
@@ -28,27 +25,27 @@ public class RegistrationRequest {
         this.email = email;
     }
 
-    public @NotEmpty(message = "O campo username é obrigatório") @NotBlank(message = "O campo username é obrigatório") String getUsername() {
+    public  String getUsername() {
         return username;
     }
 
-    public void setUsername(@NotEmpty(message = "O campo username é obrigatório") @NotBlank(message = "O campo username é obrigatório") String username) {
+    public void setUsername(  String username) {
         this.username = username;
     }
 
-    public @NotEmpty(message = "O campo password é obrigatório") @NotBlank(message = "O campo password é obrigatório") String getPassword() {
+    public  String getPassword() {
         return password;
     }
 
-    public void setPassword(@NotEmpty(message = "O campo password é obrigatório") @NotBlank(message = "O campo password é obrigatório") String password) {
+    public void setPassword( String password) {
         this.password = password;
     }
 
-    public @NotEmpty(message = "O campo email é obrigatório") @NotBlank(message = "O campo email é obrigatório") String getEmail() {
+    public  String getEmail() {
         return email;
     }
 
-    public void setEmail(@NotEmpty(message = "O campo email é obrigatório") @NotBlank(message = "O campo email é obrigatório") String email) {
+    public void setEmail( String email) {
         this.email = email;
     }
 

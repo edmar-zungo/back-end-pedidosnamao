@@ -1,8 +1,10 @@
 package com.edmarzungo.pedidosnamao.security.service;
 
 import com.edmarzungo.pedidosnamao.exceptions.GlobalExeception;
+import com.edmarzungo.pedidosnamao.security.User;
+import com.edmarzungo.pedidosnamao.security.handler.GlobalExceptionHandler;
 import com.edmarzungo.pedidosnamao.security.repositories.UserRepository;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -17,8 +19,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow( () -> new GlobalExeception("Usuário não encntrado!"));
+                .orElseThrow(() -> new GlobalExeception("Usuário não encontrado!"));
     }
 }

@@ -23,19 +23,19 @@ public class AuthenticationRequest {
         this.username = username;
     }
 
-    public @NotEmpty(message = "O campo password é obrigatório") @Size(min = 4, message = "A password te que ter pelomenos 4 caracteres") String getPassword() {
+    public  String getPassword() {
         return password;
     }
 
-    public void setPassword(@NotEmpty(message = "O campo password é obrigatório") @Size(min = 4, message = "A password te que ter pelomenos 4 caracteres") String password) {
+    public void setPassword( String password) {
         this.password = password;
     }
 
-    public @NotEmpty(message = "O campo username é obrigatório")  String getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    public void setUsername(@NotEmpty(message = "O campo username é obrigatório") String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 

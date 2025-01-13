@@ -69,6 +69,16 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(GlobalExeception.class)
+    public ResponseEntity<ExceptionResponse> handleException(GlobalExeception exp){
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse();
+        exceptionResponse.setBusinessErrorDescription("Erro de autenticação!");
+        exceptionResponse.setError(exp.getMessage());
+
+        return ResponseEntity.status(BAD_REQUEST).body(exceptionResponse);
+
+    }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> handleException(Exception exp){
 

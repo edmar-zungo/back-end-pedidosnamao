@@ -36,7 +36,7 @@ public class AuthenticationServie {
         this.jwtService = jwtService;
     }
 
-    public String register(@Valid RegistrationRequest request) {
+    public RegisterResponse register(@Valid RegistrationRequest request) {
         var roleUser = roleRepository.findByName("USER").orElseThrow(() -> new GlobalExeception("Adicione uma role USER"));
 
         User user = new User();
@@ -49,7 +49,11 @@ public class AuthenticationServie {
 
         user = userRepository.save(user);
 
-        return generateAndSaveToken(user);
+        RegisterResponse response = new RegisterResponse();
+
+         response.setMessage(generateAndSaveToken(user));
+
+         return response;
     }
 
     private String generateAndSaveToken(User user) {
@@ -62,8 +66,10 @@ public class AuthenticationServie {
         token.setValidatedAt(LocalDateTime.now());
 
         token = tokenRepository.save(token);
-
-        return token.getToken();
+        if (token.getToken() == null){
+            throw new GlobalExeception("Erro ao gerar Token!");
+        }
+        return "Usuário registrado com sucesso!";
     }
 
     private String generateActivationCode(int length) {
