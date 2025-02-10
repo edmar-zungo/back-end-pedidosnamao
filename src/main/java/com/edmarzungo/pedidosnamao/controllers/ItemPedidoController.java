@@ -1,6 +1,7 @@
 package com.edmarzungo.pedidosnamao.controllers;
 
 import com.edmarzungo.pedidosnamao.services.ItemPedidoService;
+import com.edmarzungo.pedidosnamao.services.dtos.ItemConsumoDTO;
 import com.edmarzungo.pedidosnamao.services.dtos.ItemPedidoDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -53,5 +54,10 @@ public class ItemPedidoController {
     public ResponseEntity<Void> delete(@PathVariable(value = "id") UUID id){
         itemPedidoService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/adicionar-item")
+    public ResponseEntity<ItemPedidoDTO> adicionarItemPedido(@RequestBody ItemConsumoDTO itemConsumoDTO){
+        return ResponseEntity.ok( itemPedidoService.init(itemConsumoDTO) );
     }
 }

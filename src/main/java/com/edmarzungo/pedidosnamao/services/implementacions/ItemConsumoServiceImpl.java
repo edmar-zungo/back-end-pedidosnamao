@@ -8,6 +8,7 @@ import com.edmarzungo.pedidosnamao.exceptions.GlobalExeception;
 import com.edmarzungo.pedidosnamao.repositories.ItemConsumoRepository;
 import com.edmarzungo.pedidosnamao.services.ItemConsumoService;
 import com.edmarzungo.pedidosnamao.services.dtos.ItemConsumoDTO;
+import com.edmarzungo.pedidosnamao.services.dtos.ItemPedidoDTO;
 import com.edmarzungo.pedidosnamao.services.mappers.ItemConsumoMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,8 @@ public class ItemConsumoServiceImpl implements ItemConsumoService {
         ItemConsumoModel itemConsumoModel = itemConsumoMapper.itemConsumoDTOToItemConsumoModel(itemConsumoDTO);
 
         itemConsumoModel = itemConsumoRepository.save(itemConsumoModel);
+
+
         itemConsumoDTO = itemConsumoMapper.itemConsumoModelToItemConsumoDTO(itemConsumoModel);
         return itemConsumoDTO;
 
@@ -46,17 +49,17 @@ public class ItemConsumoServiceImpl implements ItemConsumoService {
         ItemConsumoModel itemConsumoToUpdate = itemConsumoRepository.findById(itemConsumoId).orElseThrow(() -> new GlobalExeception("Nenhum Item de Consumo encontrado!"));
 
         itemConsumoToUpdate.setdataActualizacao(ZonedDateTime.now());
-        itemConsumoToUpdate.setCardapio(itemConsumoDTO.cardapio());
+        itemConsumoToUpdate.setCardapio(itemConsumoDTO.getCardapio());
         itemConsumoToUpdate.setdataActualizacao(ZonedDateTime.now());
-        itemConsumoToUpdate.setTipoItemConsumo(itemConsumoDTO.tipoItemConsumo());
-        itemConsumoToUpdate.setCozinha(itemConsumoDTO.cozinha());
-        itemConsumoToUpdate.setDescricao(itemConsumoDTO.descricao());
-        itemConsumoToUpdate.setEstadoItemConsumo(itemConsumoDTO.estadoItemConsumo());
-        itemConsumoToUpdate.setImagem(itemConsumoDTO.imagem());
-        itemConsumoToUpdate.setImagemContentType(itemConsumoDTO.imagemContentType());
-        itemConsumoToUpdate.setOrigem(itemConsumoDTO.origem());
-        itemConsumoToUpdate.setPreco(itemConsumoDTO.preco());
-        itemConsumoToUpdate.setTipoBebida(itemConsumoDTO.tipoBebida());
+        itemConsumoToUpdate.setTipoItemConsumo(itemConsumoDTO.getTipoItemConsumo());
+        itemConsumoToUpdate.setCozinha(itemConsumoDTO.getCozinha());
+        itemConsumoToUpdate.setDescricao(itemConsumoDTO.getDescricao());
+        itemConsumoToUpdate.setEstadoItemConsumo(itemConsumoDTO.getEstadoItemConsumo());
+        itemConsumoToUpdate.setImagem(itemConsumoDTO.getImagem());
+        itemConsumoToUpdate.setImagemContentType(itemConsumoDTO.getImagemContentType());
+        itemConsumoToUpdate.setOrigem(itemConsumoDTO.getOrigem());
+        itemConsumoToUpdate.setPreco(itemConsumoDTO.getPreco());
+        itemConsumoToUpdate.setTipoBebida(itemConsumoDTO.getTipoBebida());
 
         itemConsumoToUpdate = itemConsumoRepository.save(itemConsumoToUpdate);
         itemConsumoDTO = itemConsumoMapper.itemConsumoModelToItemConsumoDTO(itemConsumoToUpdate);

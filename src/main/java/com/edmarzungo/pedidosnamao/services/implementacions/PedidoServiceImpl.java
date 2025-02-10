@@ -56,7 +56,7 @@ public class PedidoServiceImpl implements PedidoService {
         PedidoModel pedidoToUpdate = pedidoRepository.findById(pedidoId)
                 .orElseThrow(() -> new GlobalExeception("Nenhum Pedido encontrado!"));
 
-        List<ItemPedidoDTO> itemPedidoDTOList = itemPedidoService.getAll().stream().filter(x -> x.pedido().getId().equals(pedidoId)).toList();
+        List<ItemPedidoDTO> itemPedidoDTOList = itemPedidoService.getAll().stream().filter(x -> x.getPedido().getId().equals(pedidoId)).toList();
 
         pedidoToUpdate.setMesa(pedidoDTO.mesa());
         pedidoToUpdate.setDescricao(geraDesdcricaoPedido(pedidoToUpdate));
@@ -248,11 +248,11 @@ public class PedidoServiceImpl implements PedidoService {
     public PedidoDTO calculaTotalPagar(UUID pedidoId){
         PedidoDTO pedidoDTO = getOne(pedidoId);
         PedidoModel pedidoModel = pedidoMapper.pedidoDTOToPedidoModel(pedidoDTO);
-        List<ItemPedidoDTO> itemPedidoDTOList = itemPedidoService.getAll().stream().filter(x -> x.pedido().getId().equals(pedidoModel.getId())).toList();
+        List<ItemPedidoDTO> itemPedidoDTOList = itemPedidoService.getAll().stream().filter(x -> x.getPedido().getId().equals(pedidoModel.getId())).toList();
         Double totalPagar = ZERO;
 
         for (var item: itemPedidoDTOList){
-            totalPagar += item.precoItemPedido();
+            totalPagar += item.getPrecoItemPedido();
         }
 
         pedidoModel.setTotalPagar(totalPagar);

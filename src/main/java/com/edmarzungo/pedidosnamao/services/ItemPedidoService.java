@@ -1,5 +1,6 @@
 package com.edmarzungo.pedidosnamao.services;
 
+import com.edmarzungo.pedidosnamao.services.dtos.ItemConsumoDTO;
 import com.edmarzungo.pedidosnamao.services.dtos.ItemPedidoDTO;
 import com.edmarzungo.pedidosnamao.services.dtos.PedidoDTO;
 
@@ -16,6 +17,6 @@ public interface ItemPedidoService {
     ItemPedidoDTO getOne(UUID itemPedidoId);
     void delete(UUID itemPedidoId);
 
-    ItemPedidoDTO init(ItemPedidoDTO itemPedidoDTO);
+    ItemPedidoDTO init(ItemConsumoDTO itemConsumoDTO);
     List<ItemPedidoDTO> itensPedidoByPedido(UUID pedidoId);
 }

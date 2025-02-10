@@ -5,8 +5,10 @@ import com.edmarzungo.pedidosnamao.domain.MesaModel;
 import com.edmarzungo.pedidosnamao.exceptions.GlobalExeception;
 import com.edmarzungo.pedidosnamao.repositories.ItemPedidoRepository;
 import com.edmarzungo.pedidosnamao.services.ItemPedidoService;
+import com.edmarzungo.pedidosnamao.services.dtos.ItemConsumoDTO;
 import com.edmarzungo.pedidosnamao.services.dtos.ItemPedidoDTO;
 import com.edmarzungo.pedidosnamao.services.dtos.MesaDTO;
+import com.edmarzungo.pedidosnamao.services.mappers.ItemConsumoMapper;
 import com.edmarzungo.pedidosnamao.services.mappers.ItemPedidoMapper;
 import org.springframework.stereotype.Service;
 
@@ -20,15 +22,17 @@ public class ItemPedidoServiceImpl implements ItemPedidoService {
 
     private final ItemPedidoMapper itemPedidoMapper;
     private final ItemPedidoRepository itemPedidoRepository;
+    private final ItemConsumoMapper itemConsumoMapper;
 
-    public ItemPedidoServiceImpl(ItemPedidoMapper itemPedidoMapper, ItemPedidoRepository itemPedidoRepository) {
+    public ItemPedidoServiceImpl(ItemPedidoMapper itemPedidoMapper, ItemPedidoRepository itemPedidoRepository, ItemConsumoMapper itemConsumoMapper) {
         this.itemPedidoMapper = itemPedidoMapper;
         this.itemPedidoRepository = itemPedidoRepository;
+        this.itemConsumoMapper = itemConsumoMapper;
     }
 
     @Override
     public ItemPedidoDTO save(ItemPedidoDTO itemPedidoDTO) {
-        itemPedidoDTO = init(itemPedidoDTO);
+
         ItemPedidoModel itemPedidoModel = itemPedidoMapper.itemPedidoDTOToItemPedidoModel(itemPedidoDTO);
 
         itemPedidoModel = itemPedidoRepository.save(itemPedidoModel);
@@ -43,11 +47,11 @@ public class ItemPedidoServiceImpl implements ItemPedidoService {
 
         ItemPedidoModel itemPedidoModel = itemPedidoRepository.findById(itemPedidoId).orElseThrow(() -> new GlobalExeception("Nenhum item encontrado!"));
 
-        itemPedidoModel.setQuantidadeItemConsumo(itemPedidoDTO.quantidadeItemConsumo());
-        itemPedidoModel.setPrecoItemPedido(itemPedidoDTO.precoItemPedido());
-        itemPedidoModel.setDesconto(itemPedidoDTO.desconto());
-        itemPedidoModel.setItemConsumo(itemPedidoDTO.itemConsumo());
-        itemPedidoModel.setDescricao(itemPedidoDTO.descricao());
+        itemPedidoModel.setQuantidadeItemConsumo(itemPedidoDTO.getQuantidadeItemConsumo());
+        itemPedidoModel.setPrecoItemPedido(itemPedidoDTO.getPrecoItemPedido());
+        itemPedidoModel.setDesconto(itemPedidoDTO.getDesconto());
+        itemPedidoModel.setItemConsumo(itemPedidoDTO.getItemConsumo());
+        itemPedidoModel.setDescricao(itemPedidoDTO.getDescricao());
 
         itemPedidoModel = itemPedidoRepository.save(itemPedidoModel);
         itemPedidoDTO = itemPedidoMapper.itemPedidoModelToItemPedidoDTO(itemPedidoModel);
@@ -82,30 +86,22 @@ public class ItemPedidoServiceImpl implements ItemPedidoService {
     }
 
     @Override
-    public ItemPedidoDTO init(ItemPedidoDTO itemPedidoDTO) {
-        ItemPedidoModel itemPedidoModel = itemPedidoMapper.itemPedidoDTOToItemPedidoModel(itemPedidoDTO);
+    public ItemPedidoDTO init(ItemConsumoDTO itemConsumoDTO) {
+        ItemPedidoDTO itemPedidoDTO = new ItemPedidoDTO();
 
-        if (itemPedidoModel.getPedido().getId() == null){
-            throw new GlobalExeception("Adicione um pedido ao item de consumo!");
+        itemPedidoDTO.setItemConsumo( itemConsumoMapper.itemConsumoDTOToItemConsumoModel(itemConsumoDTO) );
+        itemPedidoDTO.setPrecoItemPedido(itemConsumoDTO.getPreco() );
+        itemPedidoDTO.setDescricao(itemConsumoDTO.getDescricao() );
+
+        itemPedidoDTO.setQuantidadeItemConsumo(itemPedidoDTO.getQuantidadeItemConsumo() == null ? 1L : itemPedidoDTO.getQuantidadeItemConsumo() );
+
+        itemPedidoDTO.setDesconto(itemPedidoDTO.getDesconto() == null ? 0D : itemPedidoDTO.getDesconto());
+
+        if (itemPedidoDTO.getDesconto() > 0){
+            itemPedidoDTO.setPrecoItemPedido(itemPedidoDTO.getPrecoItemPedido() - itemPedidoDTO.getDesconto() );
         }
 
-        if (itemPedidoModel.getItemConsumo() == null){
-            throw new GlobalExeception("Adicione um item de consumo!");
-        }
-
-        if (itemPedidoModel.getPrecoItemPedido() == null){
-            throw new GlobalExeception("Adicione um preço ao item!");
-        }
-
-        itemPedidoModel.setQuantidadeItemConsumo(itemPedidoModel.getQuantidadeItemConsumo() == null ? 1L : itemPedidoModel.getQuantidadeItemConsumo() );
-
-        itemPedidoModel.setDesconto(itemPedidoModel.getDesconto() == null ? 0D : itemPedidoModel.getDesconto());
-
-        if (itemPedidoModel.getDesconto() > 0){
-            itemPedidoModel.setPrecoItemPedido(itemPedidoModel.getPrecoItemPedido() - itemPedidoModel.getDesconto() );
-        }
-
-        itemPedidoDTO = itemPedidoMapper.itemPedidoModelToItemPedidoDTO(itemPedidoModel);
+        itemPedidoDTO = itemPedidoMapper.itemPedidoModelToItemPedidoDTO( itemPedidoMapper.itemPedidoDTOToItemPedidoModel(itemPedidoDTO) );
 
 
         return itemPedidoDTO;
